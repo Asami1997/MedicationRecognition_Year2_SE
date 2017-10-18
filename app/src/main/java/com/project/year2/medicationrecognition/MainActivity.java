@@ -1,9 +1,12 @@
 package com.project.year2.medicationrecognition;
 
+import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +16,7 @@ import android.util.SparseArray;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.vision.Frame;
@@ -30,7 +34,10 @@ public class MainActivity extends AppCompatActivity {
 
     ImageView image_view;
     String mCurrentPhotoPath;
+    private static final int TAKE_PICTURE = 1;
 
+    //will be used to get the image from the device's storage
+    private Uri imageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +73,8 @@ public class MainActivity extends AppCompatActivity {
                 Frame frame = new Frame.Builder().setBitmap(bitmap).build();
 
                 //Detecting Text
-                //Storing all the results
+                //Storing all the results in a sparsearray
+                //sparse array maps integers to objects
 
                 SparseArray<TextBlock> items = textRecognizer.detect(frame);
 
@@ -74,12 +82,11 @@ public class MainActivity extends AppCompatActivity {
 
                 for (int i = 0 ; i<items.size();i++){
 
-
-
                     TextBlock item = items.valueAt(i);
 
                     Log.i("item " + String.valueOf(i),item.getValue());
 
+
                 }
 
             }
@@ -88,44 +95,50 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    //This function allows the user to take a picture
+
 
     public void openCamera(View view){
 
-        //Intent to open the camera app
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        //File will be created in the device public/shared storage , outside the app
+        //this file will contain the image
+        File photo = new File(Environment.getExternalStorageDirectory(),  "Pic.jpg");
+        //This will allow the full sized imaged to be stored in the file
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photo));
+        imageUri = Uri.fromFile(photo);
+        startActivityForResult(intent, TAKE_PICTURE);
 
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-        //0 is the request code
-        startActivityForResult(cameraIntent,0);
 
     }
+
 
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case TAKE_PICTURE:
+                if (resultCode == Activity.RESULT_OK) {
+                    Uri imageTaken = imageUri;
+                    //This notifies the content resolver that change has happened in the file ( In this case that an image has been saved in the file)
+                    getContentResolver().notifyChange(imageTaken, null);
+                    ContentResolver cr = getContentResolver();
+                    Bitmap bitmap;
+                    //try retrieving the image from teh devices's storage
+                    try {
+                        //This will retrieve the image from the given URI as a bitmap
+                        bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, imageTaken);
 
-
-        //open camera intent
-        if(requestCode == 0){
-
-            if(data != null){
-
-                // The image captured
-                Bitmap captured_Image_BitMap = (Bitmap) data.getExtras().get("data");
-
-                if(captured_Image_BitMap != null){
-
-
-                    image_view.setImageBitmap(captured_Image_BitMap);
-
-                    extractText(captured_Image_BitMap);
+                        image_view.setImageBitmap(bitmap);
+                        // extract text in the image taken by user
+                        extractText(bitmap);
+                    } catch (Exception e) {
+                        Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT)
+                                .show();
+                        Toast.makeText(this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-
         }
     }
 
-    
 }
