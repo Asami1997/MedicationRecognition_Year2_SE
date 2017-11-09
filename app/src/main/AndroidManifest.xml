@@ -3,7 +3,7 @@
     package="com.project.year2.medicationrecognition">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
+//Hello_world
 
 
     <application
