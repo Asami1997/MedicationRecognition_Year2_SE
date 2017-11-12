@@ -68,7 +68,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_1,id);
         contentValues.put(COLUMN_2,name);
-        contentValues.put(COLUMN_3,ingredient);
+        contentValues.put(COLUMN_3,ingredient); 
         contentValues.put(COLUMN_4,inventory);
 
         db.update(TABLE_NAME,contentValues,"ID = ?", new String[] { id });
