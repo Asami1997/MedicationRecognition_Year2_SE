@@ -9,19 +9,12 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-
-
-
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
     //Initializing pre-processing object
-
-
-
   }
 
   /** Start pick image activity with chooser. */
