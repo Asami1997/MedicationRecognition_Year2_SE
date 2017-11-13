@@ -32,6 +32,23 @@ public class Database {
         medicationDatabase.execSQL("INSERT INTO Medications (name ,activeIngredient,inventory) values ('Tylenol' ,'Paracetamol' ,0)");
 
     }
-    
+
+
+  public void checkForAvailabilty(String medicine){
+
+
+        
+  }
+
+  public  void getActiveIngredient(String medicine){
+
+
+  }
+
+  public void getAlternativeMedicine(String activeIngredient){
+
+
+  }
+
 
 }

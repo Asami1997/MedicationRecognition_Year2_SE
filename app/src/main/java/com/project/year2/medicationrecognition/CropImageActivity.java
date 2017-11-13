@@ -345,7 +345,7 @@ public class CropImageActivity extends AppCompatActivity
       detailsCounter++;
 
     }
-    Toast.makeText(this, "Cropping Done", Toast.LENGTH_SHORT).show();
+
   }
 
   /** Rotate the image in the crop image view. */
@@ -529,7 +529,7 @@ public class CropImageActivity extends AppCompatActivity
 
     }else {
 
-      Toast.makeText(context, "here1", Toast.LENGTH_SHORT).show();
+
       // Text Recognizer Is Working
 
       Frame frame = new Frame.Builder().setBitmap(bitmap)

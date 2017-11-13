@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-    Toast.makeText(this, "Back From Crop Activity", Toast.LENGTH_SHORT).show();
+
     // handle result of CropImageActivity
     if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
       CropImage.ActivityResult result = CropImage.getActivityResult(data);
