@@ -49,49 +49,48 @@ public class MainActivity extends AppCompatActivity {
 
     public void extractText(Bitmap bitmap) {
 
-            //Detect text
+        //Detect text
 
-            //The Text Recognizer Object Will Detect The Text
+        //The Text Recognizer Object Will Detect The Text
 
-            Context context = getApplicationContext();
+        Context context = getApplicationContext();
 
-            TextRecognizer textRecognizer = new TextRecognizer.Builder(context).build();
-
-
-            //check if the text Recognizer object is working before using it to detect text
-
-            if(!textRecognizer.isOperational()){
+        TextRecognizer textRecognizer = new TextRecognizer.Builder(context).build();
 
 
-                Log.e("ERROR","DETECTOR DEPENDENCIES ARE NOT AVAILABLE YET");
+        //check if the text Recognizer object is working before using it to detect text
 
-            }else {
-
-                Toast.makeText(context, "here1", Toast.LENGTH_SHORT).show();
-                // Text Recognizer Is Working
-
-                Frame frame = new Frame.Builder().setBitmap(bitmap).build();
-
-                //Detecting Text
-                //Storing all the results in a sparsearray
-                //sparse array maps integers to objects
-
-                SparseArray<TextBlock> items = textRecognizer.detect(frame);
-
-                Log.i("size",String.valueOf(items.size()));
-
-                for (int i = 0 ; i<items.size();i++){
-
-                    TextBlock item = items.valueAt(i);
-
-                    Log.i("item " + String.valueOf(i),item.getValue());
+        if (!textRecognizer.isOperational()) {
 
 
-                }
+            Log.e("ERROR", "DETECTOR DEPENDENCIES ARE NOT AVAILABLE YET");
+
+        } else {
+
+            Toast.makeText(context, "here1", Toast.LENGTH_SHORT).show();
+            // Text Recognizer Is Working
+
+            Frame frame = new Frame.Builder().setBitmap(bitmap).build();
+
+            //Detecting Text
+            //Storing all the results in a sparsearray
+            //sparse array maps integers to objects
+
+            SparseArray<TextBlock> items = textRecognizer.detect(frame);
+
+            Log.i("size", String.valueOf(items.size()));
+
+
+            for (int i = 0; i < items.size(); i++) {
+
+                TextBlock item = items.valueAt(i);
+
+                Log.i("item " + String.valueOf(i), item.getValue());
+
 
             }
 
-
+        }
     }
 
 
