@@ -24,16 +24,28 @@ import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.*;
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+
+/**
+ *
+ * In this class , i am trying to find the required information from the generated text , instead of the image itself
+ *
+ */
 public class MainActivity extends AppCompatActivity {
 
     //View in our layout
 
     ImageView image_view;
     String mCurrentPhotoPath;
+    ArrayList<String> prescriptionDetails;
     private static final int TAKE_PICTURE = 1;
 
     //will be used to get the image from the device's storage
@@ -84,7 +96,14 @@ public class MainActivity extends AppCompatActivity {
 
                     TextBlock item = items.valueAt(i);
 
-                    Log.i("item " + String.valueOf(i),item.getValue());
+                    String extractedString = item.getValue();
+
+                    Log.i("item " + String.valueOf(i),extractedString);
+
+                    //identify the item generated
+
+                    regexCheaker("Name|Age|Medication|Date|Dosage",extractedString);
+
 
 
                 }
@@ -139,6 +158,82 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         }
+    }
+
+
+
+    /**
+     *
+     *
+     * @param theRegex will contain the regular expression itself
+     * @param str2cheak will contain the string i want to search in
+     */
+    public  void regexCheaker(String theRegex,String str2cheak){
+
+        String lines[];
+
+
+        prescriptionDetails= new ArrayList<>();
+
+        //define the regular expression
+
+        Pattern checkRegex= Pattern.compile(theRegex);
+
+        Matcher regexMatcher = checkRegex.matcher(str2cheak);
+
+        //find all the matches for this
+
+		/*
+		 *
+		 *will give all the matches for us using the matcher
+		 */
+        while(regexMatcher.find()){
+
+            //checking if the match is not null
+
+            //.group will give the match
+            if(regexMatcher.group().length() != 0 ){
+
+                System.out.println(regexMatcher.group().trim());
+
+            }else{
+
+                System.out.println("No matches found");
+            }
+
+            //getting the starting index of the match
+
+            System.out.println(regexMatcher.start());
+
+            //getting the ending index of the match
+
+            System.out.println(regexMatcher.end());
+
+            //splitting the string whenever there is a new line
+
+            lines  = str2cheak.split("\\r?\\n");
+
+           //adding the array elements to arraylist if they are not already in the arraylist
+
+            for(String value : lines){
+
+                if(prescriptionDetails.contains(value)){
+
+
+                }else{
+
+                    prescriptionDetails.add(value);
+
+
+                }
+            }
+
+
+
+        }
+
+        Log.i("prescriptiondetails",prescriptionDetails.toString());
+
     }
 
 }
