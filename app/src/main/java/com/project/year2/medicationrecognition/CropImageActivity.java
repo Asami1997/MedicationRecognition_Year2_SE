@@ -34,6 +34,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.Toast;
+package com.example.androidimageview;
+package pete.android.study;
+import android.graphics.Bitmap;
+import android.graphics.Color
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.renderscript.Allocation;
+import android.renderscript.Element;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicConvolve3x3;
+import android.support.v7.app.ActionBarActivity;
+import android.widget.ImageView;
 
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
@@ -42,8 +55,7 @@ import com.google.android.gms.vision.text.TextRecognizer;
 import java.io.File;
 import java.io.IOException;
 
-/**
- * Built-in activity for image cropping.<br>
+ /* Built-in activity for image cropping.<br>
  * Use {@link CropImage#activity(Uri)} to create a builder to start this activity.
  */
 public class CropImageActivity extends AppCompatActivity
@@ -476,7 +488,7 @@ public class CropImageActivity extends AppCompatActivity
 
   //This method is called after each crop is done in the cropImageActivity
 
-  public void crropedImageURI(Uri uri){
+  public Bitmap crropedImageURI(Uri uri){
 
     //identify this is the uri of which cropped image , ie( which detail in the prescription) and this depends on the detailCounter in the CropImageActivity at the time of calling this function
 
@@ -493,7 +505,17 @@ public class CropImageActivity extends AppCompatActivity
 
       //DISPLAYING THE DARKEND IMAGE THE IMAGEVIEW AT THE BOTTOM
       pre_processing_imageView.setImageBitmap(pre_processed_bitmap);
-
+        public static Bitmap sharpen(Bitmap mBitmap, double weight) {
+            double[][] SharpConfig = new double[][] {
+                    { 0 , -2    , 0  },
+                    { -2, weight, -2 },
+                    { 0 , -2    , 0  }
+            };
+            ConvolutionMatrix convMatrix = new ConvolutionMatrix(3);
+            convMatrix.applyConfig(SharpConfig);
+            convMatrix.Factor = weight - 8;
+            return ConvolutionMatrix.computeConvolution3x3(mBitmap, convMatrix);
+        }
 
       if(mBitmap == null){
 
@@ -565,4 +587,5 @@ public class CropImageActivity extends AppCompatActivity
   //this function assigns the information extracted from the ocr to their appropriate variables.
 
   // endregion
+}
 }

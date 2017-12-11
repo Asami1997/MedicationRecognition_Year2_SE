@@ -43,4 +43,6 @@ public class PreprocessingActivity extends AppCompatActivity {
         return dark_bitmap;
 
     }
+
+
 }
