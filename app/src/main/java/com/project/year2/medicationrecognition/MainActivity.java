@@ -37,9 +37,10 @@ public class MainActivity extends AppCompatActivity {
       CropImage.ActivityResult result = CropImage.getActivityResult(data);
       if (resultCode == RESULT_OK) {
 
-        ImageView imageView =  findViewById(R.id.quick_start_cropped_image);
+        ImageView imageView = (ImageView) findViewById(R.id.quick_start_cropped_image);
 
         //imageView.setImageURI(result.getUri());
+
 
 
 

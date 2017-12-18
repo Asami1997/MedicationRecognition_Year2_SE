@@ -1,14 +1,8 @@
+package com.project.year2.medicationrecognition;
+
 import android.graphics.Bitmap;
-import android.graphics.Color
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Bundle;
-import android.renderscript.Allocation;
-import android.renderscript.Element;
-import android.renderscript.RenderScript;
-import android.renderscript.ScriptIntrinsicConvolve3x3;
-import android.support.v7.app.ActionBarActivity;
-import android.widget.ImageView;
+import android.graphics.Color;
+import android.support.v7.app.AppCompatActivity;
 
 /**
  */
@@ -22,7 +16,7 @@ public class ConvolutionMatrix {
 
     public ConvolutionMatrix(int size) {
         Matrix = new double[size][size];
-
+    }
     public void setAll(double value) {
         for (int x = 0; x < SIZE; ++x) {
             for (int y = 0; y < SIZE; ++y) {
