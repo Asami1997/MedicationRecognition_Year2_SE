@@ -486,10 +486,12 @@ public class CropImageActivity extends AppCompatActivity
 
       //Pre-processing should take place here
 
+      //Sharpening the image
+      pre_processed_bitmap = preprocessingActivity.sharpen(mBitmap, 5);
       //DARKING THE IMAGE
-      pre_processed_bitmap = preprocessingActivity.darkenImage(mBitmap);
+      pre_processed_bitmap = preprocessingActivity.darkenImage(pre_processed_bitmap);
 
-      //DISPLAYING THE DARKEND IMAGE THE IMAGEVIEW AT THE BOTTOM
+      //DISPLAYING THE DARKEND AND SHARPENED IMAGE IN THE IMAGEVIEW AT THE BOTTOM
       pre_processing_imageView.setImageBitmap(pre_processed_bitmap);
 
 

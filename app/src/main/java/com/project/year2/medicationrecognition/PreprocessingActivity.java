@@ -44,7 +44,7 @@ public class PreprocessingActivity extends AppCompatActivity {
 
     }
 
-    public static Bitmap sharpen (Bitmap mBitmap, double weight) {
+    public Bitmap sharpen (Bitmap mBitmap, double weight) {
         double[][] SharpConfig = new double[][] {
                 { 0 , -2    , 0  },
                 { -2, weight, -2 },
