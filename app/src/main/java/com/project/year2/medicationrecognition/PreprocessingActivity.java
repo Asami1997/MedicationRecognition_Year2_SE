@@ -1,6 +1,7 @@
 package com.project.year2.medicationrecognition;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.BitmapDrawable;
@@ -55,5 +56,28 @@ public class PreprocessingActivity extends AppCompatActivity {
         convMatrix.applyConfig(SharpConfig);
         convMatrix.Factor = weight - 8;
         return ConvolutionMatrix.computeConvolution3x3(mBitmap, convMatrix);
+    }
+    public Bitmap RemoveNoise(Bitmap bmap) {
+        for (int x = 0; x < bmap.getWidth(); x++) {
+            for (int y = 0; y < bmap.getHeight(); y++) {
+                int pixel = bmap.getPixel(x, y);
+                int R = Color.red(pixel);
+                int G = Color.green(pixel);
+                int B = Color.blue(pixel);
+                if (R < 162 && G < 162 && B < 162)
+                    bmap.setPixel(x, y, Color.BLACK);
+            }
+        }
+        for (int  x = 0; x < bmap.getWidth(); x++) {
+            for (int y = 0; y < bmap.getHeight(); y++) {
+                int pixel = bmap.getPixel(x, y);
+                int R = Color.red(pixel);
+                int G = Color.green(pixel);
+                int B = Color.blue(pixel);
+                if (R > 162 && G > 162 && B > 162)
+                    bmap.setPixel(x, y, Color.WHITE);
+            }
+        }
+        return bmap;
     }
 }

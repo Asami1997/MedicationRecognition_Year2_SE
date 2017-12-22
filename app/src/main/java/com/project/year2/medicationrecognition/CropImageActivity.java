@@ -485,9 +485,9 @@ public class CropImageActivity extends AppCompatActivity
       Bitmap mBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),uri);
 
       //Pre-processing should take place here
-
+      pre_processed_bitmap= preprocessingActivity.RemoveNoise(mBitmap);
       //Sharpening the image
-      pre_processed_bitmap = preprocessingActivity.sharpen(mBitmap, 5);
+      pre_processed_bitmap = preprocessingActivity.sharpen(pre_processed_bitmap, 5);
       //DARKING THE IMAGE
       pre_processed_bitmap = preprocessingActivity.darkenImage(pre_processed_bitmap);
 
