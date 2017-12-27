@@ -483,13 +483,15 @@ public class CropImageActivity extends AppCompatActivity
 
       //bitmap of cropped image
       Bitmap mBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),uri);
-
+      //Bitmap immutableBmp= BitmapFactory.decodeFile(String.valueOf(uri));
+        Bitmap mutableBitmap = mBitmap.copy(Bitmap.Config.ARGB_8888, true);
       //Pre-processing should take place here
-      pre_processed_bitmap= preprocessingActivity.RemoveNoise(mBitmap);
+      pre_processed_bitmap= preprocessingActivity.RemoveNoise(mutableBitmap);
       //Sharpening the image
       pre_processed_bitmap = preprocessingActivity.sharpen(pre_processed_bitmap, 5);
       //DARKING THE IMAGE
       pre_processed_bitmap = preprocessingActivity.darkenImage(pre_processed_bitmap);
+
 
       //DISPLAYING THE DARKEND AND SHARPENED IMAGE IN THE IMAGEVIEW AT THE BOTTOM
       pre_processing_imageView.setImageBitmap(pre_processed_bitmap);
