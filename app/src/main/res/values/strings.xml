@@ -7,7 +7,7 @@
         <item>Patient Full Name</item>
         <item>Gender</item>
         <item>D.O.B</item>
-        <item>RX</item>
+        <item>Rx</item>
         <item>Medication</item>
         <item>Dosage</item>
         <item>Name</item>
@@ -18,13 +18,13 @@
         <item>Exp</item>
         <item>Expiration</item>
         <item>Expiration Date</item>
-        <item>Pateint Name</item>
+        <item>Patient Name</item>
         <item>Date Of Birth</item>
         <item>Sex</item>
         <item>Refills</item>
         <item>Refill</item>
         <item>Rx Date</item>
         <item>Pharmacy</item>
-
+        <item>Date</item>
     </string-array>
 </resources>

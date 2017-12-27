@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
     private String tempArray[];
     String newline ;
     private String splitedString[];
+    //This array list will contain the results of the segmentation and searching process
+    private ArrayList<String> detailsList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
          //Dictionary array in string.xml file
          Dictionary = getResources().getStringArray(R.array.Dictionary);
          newline = System.getProperty("line.separator");
+         detailsList = new ArrayList<String>();
     }
 
     public void extractText(Bitmap bitmap) {
@@ -119,15 +122,23 @@ public class MainActivity extends AppCompatActivity {
                         //first word in a string
                         String firstWord = tempArray[0];
 
-                        //if first word is in Dictionary
-                        if(firstWord.equals(value)){
 
-                         //check if there is only one wordd
+                        Log.i("First word",firstWord);
+                        Log.i("Dictionary value",value);
+
+                        //remove colon from first word
+
+                        //if extracted string contain any word in Dictionary
+                        if(extractedString.contains(value) || extractedString.contains(value.toUpperCase())){
+
+                         //check if there is only one word
+
+                            Log.i("has first word","yes");
 
                          if(tempArray.length == 1){
 
                              //take the next item textRecognizer extracted
-
+                            Log.i("length","1");
                          }else{
 
                              //check if there is more than one line
@@ -137,9 +148,19 @@ public class MainActivity extends AppCompatActivity {
 
                                  //has only one line , this is the result
 
+                                 Log.i("one line","yes");
+                                 System.out.println(value + " " + extractedString);
+
+                                 //if already in details arraylist , dont add it
+                                 if(!detailsList.contains(extractedString)){
+
+                                     detailsList.add(extractedString);
+
+                                 }
+
                              }else{
                                  //has more than one line
-
+                                 Log.i("more than one line","yes");
                                  //check if new lines contain keywords in dictionary
 
                                  splitedString  = extractedString.split("\\r?\\n");
@@ -147,11 +168,24 @@ public class MainActivity extends AppCompatActivity {
                                  for(String line : splitedString){
 
                                      //if line contain keywords
-                                  if(line.contains(value)){
+                                  if(line.contains(value) || line.contains(value.toUpperCase())){
+
+                                      //take what it after it tell end of line
+                                      Log.i("next line value",line);
+                                      //remove this line from extracted string
+                                      extractedString = extractedString.replace(line,"");
+
+                                      Log.i("extracted stringr",extractedString);
+
+                                      if(!detailsList.contains(line)){
+                                          detailsList.add(line);
+                                      }
 
                                   }else{
                                       //if line dose not contain keywords
                                       //add it to result
+                                      Log.i("not added value",line);
+
                                   }
 
                                  }
@@ -162,6 +196,8 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 }
+
+                Log.i("detailsArrayList",detailsList.toString());
 
             }
 
