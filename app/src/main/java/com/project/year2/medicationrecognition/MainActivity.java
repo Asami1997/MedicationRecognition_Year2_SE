@@ -37,6 +37,7 @@ import java.util.Date;
 /**
  *
  * In this class , i am trying to find the required information from the generated text , instead of the image itself
+ * Using Regular Expressions
  *
  */
 public class MainActivity extends AppCompatActivity {
@@ -47,16 +48,20 @@ public class MainActivity extends AppCompatActivity {
     String mCurrentPhotoPath;
     ArrayList<String> prescriptionDetails;
     private static final int TAKE_PICTURE = 1;
-
+    private String[] Dictionary;
     //will be used to get the image from the device's storage
     private Uri imageUri;
-
+    private String tempArray[];
+    String newline ;
+    private String splitedString[];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
          image_view = (ImageView) findViewById(R.id.panadolImageView);
-
+         //Dictionary array in string.xml file
+         Dictionary = getResources().getStringArray(R.array.Dictionary);
+         newline = System.getProperty("line.separator");
     }
 
     public void extractText(Bitmap bitmap) {
@@ -102,19 +107,66 @@ public class MainActivity extends AppCompatActivity {
 
                     //identify the item generated
 
-                    regexCheaker("Name|Age|Medication|Date|Dosage",extractedString);
+                    //regexCheaker("Patient|Age|Medication|Date|Dosage",extractedString);
 
+                   //loop through dictionary
 
+                    for(String value : Dictionary){
 
+                        //extract the first word in the string
+                        tempArray= extractedString.split(" ", 2);
+
+                        //first word in a string
+                        String firstWord = tempArray[0];
+
+                        //if first word is in Dictionary
+                        if(firstWord.equals(value)){
+
+                         //check if there is only one wordd
+
+                         if(tempArray.length == 1){
+
+                             //take the next item textRecognizer extracted
+
+                         }else{
+
+                             //check if there is more than one line
+                             boolean hasNewline = extractedString.contains(newline);
+
+                             if(hasNewline == false){
+
+                                 //has only one line , this is the result
+
+                             }else{
+                                 //has more than one line
+
+                                 //check if new lines contain keywords in dictionary
+
+                                 splitedString  = extractedString.split("\\r?\\n");
+
+                                 for(String line : splitedString){
+
+                                     //if line contain keywords
+                                  if(line.contains(value)){
+
+                                  }else{
+                                      //if line dose not contain keywords
+                                      //add it to result
+                                  }
+
+                                 }
+
+                             }
+                         }
+
+                        }
+                    }
                 }
 
             }
 
 
     }
-
-
-
 
     public void openCamera(View view){
 
@@ -129,8 +181,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -168,10 +218,11 @@ public class MainActivity extends AppCompatActivity {
      * @param theRegex will contain the regular expression itself
      * @param str2cheak will contain the string i want to search in
      */
+
+    /*
     public  void regexCheaker(String theRegex,String str2cheak){
 
         String lines[];
-
 
         prescriptionDetails= new ArrayList<>();
 
@@ -183,10 +234,8 @@ public class MainActivity extends AppCompatActivity {
 
         //find all the matches for this
 
-		/*
-		 *
-		 *will give all the matches for us using the matcher
-		 */
+		// will give all the matches for us using the matcher
+
         while(regexMatcher.find()){
 
             //checking if the match is not null
@@ -228,12 +277,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-
-
         }
 
         Log.i("prescriptiondetails",prescriptionDetails.toString());
 
     }
+    */
 
 }

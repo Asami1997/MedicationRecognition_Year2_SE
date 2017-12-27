@@ -1,3 +1,30 @@
 <resources>
     <string name="app_name">Medication Recognition</string>
+
+    <string-array name="Dictionary">
+
+        <item>Age</item>
+        <item>Patient Full Name</item>
+        <item>Gender</item>
+        <item>D.O.B</item>
+        <item>RX</item>
+        <item>Medication</item>
+        <item>Dosage</item>
+        <item>Name</item>
+        <item>Phone</item>
+        <item>Address</item>
+        <item>Patient</item>
+        <item>Quantity</item>
+        <item>Exp</item>
+        <item>Expiration</item>
+        <item>Expiration Date</item>
+        <item>Pateint Name</item>
+        <item>Date Of Birth</item>
+        <item>Sex</item>
+        <item>Refills</item>
+        <item>Refill</item>
+        <item>Rx Date</item>
+        <item>Pharmacy</item>
+
+    </string-array>
 </resources>
