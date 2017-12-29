@@ -102,7 +102,6 @@ public class MainActivity extends AppCompatActivity
                         buffer.append("Ingredient    :" + resource.getString(2)+ "\n");
                         buffer.append("Inventory     :" + resource.getString(3)+ "\n\n");
 
-
                     }
                     showMessage("Medication record",buffer.toString());
                 }

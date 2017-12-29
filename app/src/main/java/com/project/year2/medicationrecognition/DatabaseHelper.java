@@ -32,7 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS" + TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
 
         onCreate(db);
     }
@@ -40,7 +40,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean insertData(String name,String ingredient,String inventory)
     {
 
-        //this command is used to view database Log.i("name","nixon");
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_2,name);
@@ -82,5 +81,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
          return db.delete(TABLE_NAME,"ID = ?",new String[] {id});
 
     }
+
+    public Cursor getData(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_NAME;
+        return db.rawQuery(query,null);
+    }
+
+
 
 }
