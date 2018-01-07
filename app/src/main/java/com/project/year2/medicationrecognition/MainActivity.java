@@ -18,21 +18,22 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import opennlp.tools.namefind.NameFinderME;
+import opennlp.tools.namefind.TokenNameFinder;
+import opennlp.tools.namefind.TokenNameFinderModel;
+import opennlp.tools.tokenize.TokenizerME;
+import opennlp.tools.tokenize.TokenizerModel;
+import opennlp.tools.util.Span;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
-
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.regex.*;
-
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 
 /**
  *
@@ -46,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
 
     ImageView image_view;
     String mCurrentPhotoPath;
+    String allExtractedText;
+    StringBuilder stringBuilder;
     ArrayList<String> prescriptionDetails;
     private static final int TAKE_PICTURE = 1;
     private String[] Dictionary;
@@ -65,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
          Dictionary = getResources().getStringArray(R.array.Dictionary);
          newline = System.getProperty("line.separator");
          detailsList = new ArrayList<String>();
+         stringBuilder = new StringBuilder();
     }
 
     public void extractText(Bitmap bitmap) {
@@ -108,11 +112,9 @@ public class MainActivity extends AppCompatActivity {
 
                     Log.i("item " + String.valueOf(i),extractedString);
 
-                    //identify the item generated
-
-                    //regexCheaker("Patient|Age|Medication|Date|Dosage",extractedString);
-
-                   //loop through dictionary
+                    stringBuilder.append(extractedString);
+                    /*
+                    getName(extractedString);
 
                     for(String value : Dictionary){
 
@@ -135,10 +137,11 @@ public class MainActivity extends AppCompatActivity {
 
                             Log.i("has first word","yes");
 
-                         if(tempArray.length == 1){
+                         if(extractedString.lastIndexOf(value + value.length()) == extractedString.length()-1){
 
                              //take the next item textRecognizer extracted
                             Log.i("length","1");
+
                          }else{
 
                              //check if there is more than one line
@@ -195,12 +198,33 @@ public class MainActivity extends AppCompatActivity {
 
                         }
                     }
+                    */
                 }
+
+                allExtractedText = stringBuilder.toString();
+
+                naturalLangProcess(allExtractedText);
 
                 Log.i("detailsArrayList",detailsList.toString());
 
             }
 
+    }
+
+    private void getName(String extractedString) {
+
+        String[] splitedText = extractedString.split("\\r?\\n");
+
+        for(String item : splitedText){
+            Pattern pattern = Pattern.compile("^[a-zA-z ]*$", Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(item);
+            if (matcher.matches()) {
+                Log.i("This item is a name",item);
+            }else {
+                Log.i("This item is not a name", "No");
+                //loop through dictionary
+            }
+        }
 
     }
 
@@ -246,78 +270,42 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //extract name using natural language processing
+    public void naturalLangProcess(String text){
 
-
-    /**
-     *
-     *
-     * @param theRegex will contain the regular expression itself
-     * @param str2cheak will contain the string i want to search in
-     */
-
-    /*
-    public  void regexCheaker(String theRegex,String str2cheak){
-
-        String lines[];
-
-        prescriptionDetails= new ArrayList<>();
-
-        //define the regular expression
-
-        Pattern checkRegex= Pattern.compile(theRegex);
-
-        Matcher regexMatcher = checkRegex.matcher(str2cheak);
-
-        //find all the matches for this
-
-		// will give all the matches for us using the matcher
-
-        while(regexMatcher.find()){
-
-            //checking if the match is not null
-
-            //.group will give the match
-            if(regexMatcher.group().length() != 0 ){
-
-                System.out.println(regexMatcher.group().trim());
-
-            }else{
-
-                System.out.println("No matches found");
-            }
-
-            //getting the starting index of the match
-
-            System.out.println(regexMatcher.start());
-
-            //getting the ending index of the match
-
-            System.out.println(regexMatcher.end());
-
-            //splitting the string whenever there is a new line
-
-            lines  = str2cheak.split("\\r?\\n");
-
-           //adding the array elements to arraylist if they are not already in the arraylist
-
-            for(String value : lines){
-
-                if(prescriptionDetails.contains(value)){
-
-
-                }else{
-
-                    prescriptionDetails.add(value);
-
-
-                }
-            }
-
+        InputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(String.valueOf(R.raw.ennerperson));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
 
-        Log.i("prescriptiondetails",prescriptionDetails.toString());
 
+        TokenNameFinderModel model = null;
+
+        try {
+            model = new TokenNameFinderModel(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        NameFinderME nameFinder = new NameFinderME(model);
+        String[] tokens = new String[0];
+        try {
+            tokens = tokenize(text);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Span nameSpans[] = nameFinder.find(tokens);
+        for(Span s: nameSpans)
+            System.out.println(tokens[s.getStart()]);
     }
-    */
 
+    public String[] tokenize(String sentence) throws IOException{
+        InputStream inputStreamTokenizer = getClass().getResourceAsStream("res/raw/ennerperson.bin");
+        TokenizerModel tokenModel = new TokenizerModel(inputStreamTokenizer);
+        TokenizerME tokenizer = new TokenizerME(tokenModel);
+        return tokenizer.tokenize(sentence);
+    }
 }
