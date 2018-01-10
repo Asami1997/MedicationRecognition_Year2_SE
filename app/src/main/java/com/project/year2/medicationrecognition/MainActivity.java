@@ -203,8 +203,10 @@ public class MainActivity extends AppCompatActivity {
 
                 allExtractedText = stringBuilder.toString();
 
+                //start the natural language processing
                 naturalLangProcess(allExtractedText);
 
+                Log.i("path",String.valueOf(R.raw.ennerperson));
                 Log.i("detailsArrayList",detailsList.toString());
 
             }
@@ -276,6 +278,7 @@ public class MainActivity extends AppCompatActivity {
         InputStream inputStream = null;
         try {
             inputStream = new FileInputStream(String.valueOf(R.raw.ennerperson));
+            Log.i("path",String.valueOf(R.raw.ennerperson));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
