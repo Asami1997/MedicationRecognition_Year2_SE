@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "com.project.year2.medicationrecognition"
         multiDexEnabled true
-        minSdkVersion 24
-        targetSdkVersion 25
+        minSdkVersion 22
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -34,7 +34,7 @@ android {
         androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
             exclude group: 'com.android.support', module: 'support-annotations'
         })
-        compile 'org.apache.opennlp:opennlp:1.6.0'
+        compile 'org.apache.opennlp:opennlp:1.8.4'
         compile 'com.android.support:appcompat-v7:25.2.0'
         compile 'com.android.support.constraint:constraint-layout:1.0.2'
         compile fileTree(include: ['*.jar'], dir: 'libs')

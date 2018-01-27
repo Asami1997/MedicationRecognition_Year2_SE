@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
          newline = System.getProperty("line.separator");
          detailsList = new ArrayList<String>();
          stringBuilder = new StringBuilder();
+        naturalLangProcess("Hello I am jhon and i love my mom");
     }
 
     public void extractText(Bitmap bitmap) {
@@ -113,8 +114,9 @@ public class MainActivity extends AppCompatActivity {
                     Log.i("item " + String.valueOf(i),extractedString);
 
                     stringBuilder.append(extractedString);
+
                     /*
-                    getName(extractedString);
+                    //getName(extractedString);
 
                     for(String value : Dictionary){
 
@@ -204,12 +206,13 @@ public class MainActivity extends AppCompatActivity {
                 allExtractedText = stringBuilder.toString();
 
                 //start the natural language processing
-                naturalLangProcess(allExtractedText);
 
-                Log.i("path",String.valueOf(R.raw.ennerperson));
+
+                //Log.i("path",String.valueOf(R.raw.ennerperson));
                 Log.i("detailsArrayList",detailsList.toString());
 
             }
+             naturalLangProcess("Hello I am jhon and i love my mom");
 
     }
 
@@ -276,12 +279,8 @@ public class MainActivity extends AppCompatActivity {
     public void naturalLangProcess(String text){
 
         InputStream inputStream = null;
-        try {
-            inputStream = new FileInputStream(String.valueOf(R.raw.ennerperson));
-            Log.i("path",String.valueOf(R.raw.ennerperson));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        inputStream =  getResources().openRawResource(R.raw.ennerperson);
+       // Log.i("path",String.valueOf(R.raw.ennerperson));
 
 
         TokenNameFinderModel model = null;
@@ -302,7 +301,7 @@ public class MainActivity extends AppCompatActivity {
 
         Span nameSpans[] = nameFinder.find(tokens);
         for(Span s: nameSpans)
-            System.out.println(tokens[s.getStart()]);
+            Toast.makeText(this,tokens[s.getStart()] , Toast.LENGTH_SHORT).show();
     }
 
     public String[] tokenize(String sentence) throws IOException{
