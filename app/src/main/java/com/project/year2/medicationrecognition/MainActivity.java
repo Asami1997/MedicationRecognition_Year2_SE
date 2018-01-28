@@ -212,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("detailsArrayList",detailsList.toString());
 
             }
-             naturalLangProcess("Hello I am jhon and i love my mom");
+             //naturalLangProcess("Hello I am jhon and i love my mom");
 
     }
 
@@ -300,12 +300,20 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Span nameSpans[] = nameFinder.find(tokens);
+        if(nameSpans == null){
+            Log.i("NameSpans ","null");
+        }
         for(Span s: nameSpans)
-            Toast.makeText(this,tokens[s.getStart()] , Toast.LENGTH_SHORT).show();
+
+
+            Log.i("Iam Name",tokens[s.getStart()]);
+            Log.i("Iam here","yes");
+
+
     }
 
     public String[] tokenize(String sentence) throws IOException{
-        InputStream inputStreamTokenizer = getClass().getResourceAsStream("res/raw/ennerperson.bin");
+        InputStream inputStreamTokenizer = getResources().openRawResource(R.raw.entoken);
         TokenizerModel tokenModel = new TokenizerModel(inputStreamTokenizer);
         TokenizerME tokenizer = new TokenizerME(tokenModel);
         return tokenizer.tokenize(sentence);
