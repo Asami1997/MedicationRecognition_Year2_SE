@@ -4,27 +4,31 @@
     <string-array name="Dictionary">
 
         <item>Age</item>
-        <item>Patient Full Name</item>
         <item>Gender</item>
         <item>D.O.B</item>
         <item>Rx</item>
         <item>Medication</item>
         <item>Dosage</item>
-        <item>Name</item>
         <item>Phone</item>
         <item>Address</item>
-        <item>Patient</item>
         <item>Quantity</item>
         <item>Exp</item>
         <item>Expiration</item>
         <item>Expiration Date</item>
-        <item>Patient Name</item>
         <item>Date Of Birth</item>
         <item>Sex</item>
         <item>Refills</item>
         <item>Refill</item>
         <item>Rx Date</item>
-        <item>Pharmacy</item>
         <item>Date</item>
+    </string-array>
+
+
+    <!-- Array used when finding the name in the prescription -->
+
+    <string-array name="dateArray">
+        <item>date Of birth</item>
+        <item>d.o.b</item>
+        <item>birth date</item>
     </string-array>
 </resources>
