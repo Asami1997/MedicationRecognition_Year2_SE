@@ -40,15 +40,21 @@ android {
         //compile 'org.apache.opennlp:opennlp:1.6.0'
         //compile 'org.apache.opennlp:opennlp-tools:1.6.0'
         compile 'com.android.support:appcompat-v7:25.2.0'
+        compile 'com.google.firebase:firebase-auth:11.8.0'
+        compile 'com.google.firebase:firebase-database:11.8.0'
         compile 'com.android.support.constraint:constraint-layout:1.0.2'
         compile fileTree(include: ['*.jar'], dir: 'libs')
         compile 'com.android.support:support-v4:25.2.0'
         compile 'com.android.support:design:25.2.0'
         compile 'com.google.guava:guava:23.0-android'
         testCompile 'junit:junit:4.12'
-        compile 'com.google.android.gms:play-services-vision:9.8.0'
+        compile 'com.google.android.gms:play-services-vision:11.8.0'
         compile 'com.android.support:multidex:1.0.2'
-      //  implementation files('libs/opennlp-tools-1.8.4.jar')
+        //  implementation files('libs/opennlp-tools-1.8.4.jar')
         //implementation files('libs/opennlp-uima-1.8.4.jar')
     }
+}
+apply plugin: 'com.google.gms.google-services'
+dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:+'
 }

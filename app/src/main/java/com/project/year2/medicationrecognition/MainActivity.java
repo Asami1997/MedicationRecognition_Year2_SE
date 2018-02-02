@@ -42,13 +42,15 @@ public class MainActivity extends AppCompatActivity {
     private Uri imageUri;
     //This array list will contain the results of the segmentation and searching process
     private ArrayList<String> detailsList;
+    private ArrayList<String> toBeChecked;
     private String test;
     private String NAME = "";
     private String GENDER = "";
     private String BIRTHDATE = "";
     private String AGE = "";
     private String PHONE = "";
-
+    private ArrayList<String> tempArrayList;
+    private TransactionObject transactionObject;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,8 +59,10 @@ public class MainActivity extends AppCompatActivity {
         //Dictionary array in string.xml file
         DATE_Dictionary = getResources().getStringArray(R.array.dateArray);
         detailsList = new ArrayList<String>();
+        toBeChecked = new ArrayList<>();
         stringBuilder = new StringBuilder();
-        // naturalLangProcess("Full Patient Name : Jhon ");
+        Intent intent = new Intent(getApplicationContext(),LoginRegisterActivity.class);
+        startActivity(intent);
     }
 
     public void extractText(Bitmap bitmap) {
@@ -108,8 +112,6 @@ public class MainActivity extends AppCompatActivity {
                     detectedText.append(textBlock.getValue());
                     detectedText.append("\n");
                 }
-
-
             }
 
             Log.i("detected Text", detectedText.toString());
@@ -118,13 +120,14 @@ public class MainActivity extends AppCompatActivity {
             extractBirthDate(detectedText.toString());
             extractGender(detectedText.toString());
             extractPhone(detectedText.toString());
+            extractRx(detectedText.toString());
+
+            //create a transaction object after data has been extracted
+            transactionObject = new TransactionObject(NAME,AGE,PHONE,BIRTHDATE,tempArrayList);
         }
-
-
     }
 
     public void openCamera(View view) {
-
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         //File will be created in the device public/shared storage , outside the app
         //this file will contain the image
@@ -133,8 +136,6 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photo));
         imageUri = Uri.fromFile(photo);
         startActivityForResult(intent, TAKE_PICTURE);
-
-
     }
 
     @Override
@@ -165,7 +166,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     //look for patient name in the ocr result
     public void extactNameAge(String ocrResult) {
         //reset name
@@ -184,22 +184,25 @@ public class MainActivity extends AppCompatActivity {
 
             //extract name
             if (Pattern.compile(Pattern.quote("name"), Pattern.CASE_INSENSITIVE).matcher(splitedArray[i].toLowerCase()).find() && NAME.isEmpty()) {
+                addToList(splitedArray[i]);
                 int indexOfName = splitedArray[i].toLowerCase().indexOf("name");
                 NAME = splitedArray[i].substring(indexOfName + 4);
-
+                addToList(NAME);
                 if (NAME.isEmpty()) {
 
                     NAME = splitedArray[i + 1];
+                    addToList(NAME);
                 }
                 Log.i("valuename", NAME);
             }
 
             //extract age
             if (Pattern.compile(Pattern.quote("age"), Pattern.CASE_INSENSITIVE).matcher(splitedArray[i].toLowerCase()).find() && AGE.isEmpty()) {
-
+                addToList(splitedArray[i]);
                 //only if its a digit
                 if (splitedArray[i].substring(3).matches("-?\\d+(\\.\\d+)?")) {
                     AGE = splitedArray[i].substring(3);
+                    addToList(AGE);
                 }
 
 
@@ -207,6 +210,7 @@ public class MainActivity extends AppCompatActivity {
                     //only if its a digit
                     if (splitedArray[i + 1].matches("-?\\d+(\\.\\d+)?")) {
                         AGE = splitedArray[i + 1];
+                        addToList(AGE);
                     }
                 }
 
@@ -215,7 +219,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
-
 
     //look for date of birth
     public void extractBirthDate(String ocrResult) {
@@ -236,18 +239,18 @@ public class MainActivity extends AppCompatActivity {
 
                 //extract name
                 if (Pattern.compile(Pattern.quote(dicValue), Pattern.CASE_INSENSITIVE).matcher(splitedArray[i].toLowerCase()).find() && BIRTHDATE.isEmpty()) {
+                    addToList(splitedArray[i]);
                     int indexOfName = splitedArray[i].toLowerCase().indexOf(dicValue);
                     BIRTHDATE = splitedArray[i].substring(dicValue.length());
-
+                    addToList(BIRTHDATE);
                     if (BIRTHDATE.isEmpty()) {
 
                         BIRTHDATE = splitedArray[i + 1];
+                        addToList(BIRTHDATE);
                     }
                     Log.i("valuedate", BIRTHDATE);
                 }
             }
-
-
         }
     }
 
@@ -261,15 +264,15 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < splitedArray.length - 1; i++) {
 
             if (splitedArray[i].toLowerCase().contains("male")) {
-
+                addToList(splitedArray[i]);
                 GENDER = "Male";
             } else if (splitedArray[i].toLowerCase().contains("female")) {
+                addToList(splitedArray[i]);
                 GENDER = "Female";
             }
         }
         Log.i("valuegender", GENDER);
     }
-
 
     //extract phone
     public void extractPhone(String ocrResult) {
@@ -287,12 +290,16 @@ public class MainActivity extends AppCompatActivity {
 
             //extract phone
             if (Pattern.compile(Pattern.quote("phone"), Pattern.CASE_INSENSITIVE).matcher(splitedArray[i].toLowerCase()).find() && PHONE.isEmpty()) {
+                addToList(splitedArray[i]);
                 int indexOfName = splitedArray[i].toLowerCase().indexOf("phone");
                 PHONE = splitedArray[i].substring(indexOfName + 5);
+                addToList(PHONE);
 
                 if (PHONE.isEmpty()) {
 
                     PHONE = splitedArray[i + 1];
+                    addToList(PHONE);
+
                 }
                 Log.i("valuephone", PHONE);
             }
@@ -300,6 +307,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void extractRx(String ocrResult){
-        
+
+        //array that will go to server
+
+        Log.i("valuelist",toBeChecked.toString());
+        String[] splitedArray = ocrResult.split("\\r?\\n");
+        for(int i = 0 ; i<=splitedArray.length-1;i++){
+            splitedArray[i] = splitedArray[i].replaceAll("[\\-\\+\\^:,]", "");
+            if(toBeChecked.contains(splitedArray[i])){
+
+            }else{
+                Log.i("valuevalue",splitedArray[i]);
+                tempArrayList.add(splitedArray[i]);
+            }
+        }
+
+    }
+
+    public void addToList(String item){
+
+        toBeChecked.add(item);
     }
 }
