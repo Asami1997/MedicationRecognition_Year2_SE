@@ -198,6 +198,8 @@ public class LoginRegisterActivity extends AppCompatActivity implements View.OnC
                         // ...
                     }
                 });
+
+
     }
 
     private void validateUserType(FirebaseUser fUser) {
@@ -263,14 +265,17 @@ public class LoginRegisterActivity extends AppCompatActivity implements View.OnC
                             //save data to database
                             UserNew user1 = new UserNew(email,userType);
                             myRef.child("Users").child(user.getUid()).setValue(user1);
+                            goToActivity(userType);
 
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(LoginRegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
+
                     }
                 });
+
     }
 
     @Override
