@@ -1,6 +1,7 @@
 package com.project.year2.medicationrecognition;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -215,9 +216,9 @@ public class LoginRegisterActivity extends AppCompatActivity implements View.OnC
 
                             Toast.makeText(LoginRegisterActivity.this, "You Have No Access To "+
                                     userType +"side", Toast.LENGTH_SHORT).show();
+                        }else{
+                            goToActivity(type);
                         }
-                    }else{
-                        //go to desired activity
                     }
 
                 }
@@ -228,6 +229,24 @@ public class LoginRegisterActivity extends AppCompatActivity implements View.OnC
 
             }
         });
+
+    }
+
+    private void goToActivity(String type) {
+
+        switch (type){
+
+            case "User":
+                Intent intent = new Intent(getApplicationContext(),UserOCR.class);
+                startActivity(intent);
+                break;
+            case "Pharmacist":
+                //pharmacist activity
+                break;
+            case "Admin":
+                //Admin Activity
+                break;
+        }
 
     }
 

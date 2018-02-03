@@ -328,4 +328,10 @@ public class UserOCR extends AppCompatActivity {
 
         toBeChecked.add(item);
     }
+
+    //To  Prevent user from going back LoginRegister Activity
+    @Override
+    public void onBackPressed() {
+        //do nothing when back is pressed
+    }
 }
