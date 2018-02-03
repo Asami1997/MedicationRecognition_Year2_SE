@@ -21,6 +21,8 @@ import android.widget.Toast;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,7 +32,7 @@ import java.util.List;
 import java.util.jar.Attributes;
 import java.util.regex.Pattern;
 
-public class MainActivity extends AppCompatActivity {
+public class UserOCR extends AppCompatActivity {
 
     //View in our layout
 
@@ -61,8 +63,6 @@ public class MainActivity extends AppCompatActivity {
         detailsList = new ArrayList<String>();
         toBeChecked = new ArrayList<>();
         stringBuilder = new StringBuilder();
-        Intent intent = new Intent(getApplicationContext(),LoginRegisterActivity.class);
-        startActivity(intent);
     }
 
     public void extractText(Bitmap bitmap) {

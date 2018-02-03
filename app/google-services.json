@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "652537266754-ohil2b823juvs7g83r8tins5umdk1td1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.project.year2.medicationrecognition",
+            "certificate_hash": "f1788d8a330d664daf7d66fc9bc28198f4564873"
+          }
+        },
+        {
           "client_id": "652537266754-rn2e4kit71s28bdkr3jid5pq4p501bsj.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "652537266754-rn2e4kit71s28bdkr3jid5pq4p501bsj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
