@@ -66,11 +66,15 @@ public class UserOCR extends AppCompatActivity {
     private TextView rXTextView;
     DatabaseReference myRef;
     private FirebaseAuth mAuth;
-    DatabaseReference ref;
+    private DatabaseReference ref;
+    private Bitmap preprocessed_bitmap;
+    private Preprocessing preprocessing;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_ocr);
+
+        preprocessing = new Preprocessing();
 
         myRef = FirebaseDatabase.getInstance().getReference().child("Drugs");
 
@@ -189,6 +193,8 @@ public class UserOCR extends AppCompatActivity {
                         //This will retrieve the image from the given URI as a bitmap
                         bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, imageTaken);
                         Log.i("valuecamera","yes");
+
+                        preprocessBitmap(bitmap);
                         // extract text in the image taken by user
                         extractText(bitmap);
                     } catch (Exception e) {
@@ -200,6 +206,18 @@ public class UserOCR extends AppCompatActivity {
                     }
                 }
         }
+    }
+
+    //apply preprocessing to image before extracting text
+    private void preprocessBitmap(Bitmap bitmap) {
+
+        Bitmap mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+        //Pre-processing should take place here
+        //preprocessed_bitmap= preprocessing.RemoveNoise(mutableBitmap);
+        //Sharpening the image
+       // preprocessed_bitmap = preprocessing.sharpen(bitmap, 5);
+        //DARKING THE IMAGE
+      //  preprocessed_bitmap = preprocessing.toGrayscale(bitmap);
     }
 
     //look for patient name in the ocr result

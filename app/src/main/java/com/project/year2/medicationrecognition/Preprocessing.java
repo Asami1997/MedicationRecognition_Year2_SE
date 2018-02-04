@@ -17,6 +17,9 @@ import android.widget.ImageView;
 
 public class Preprocessing {
 
+    public Preprocessing() {
+    }
+
     public Bitmap toGrayscale(Bitmap bmpOriginal)
     {
         int width, height;
