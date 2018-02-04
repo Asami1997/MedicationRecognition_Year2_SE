@@ -239,11 +239,13 @@ public class LoginRegisterActivity extends AppCompatActivity implements View.OnC
         switch (type){
 
             case "User":
-                Intent intent = new Intent(getApplicationContext(),UserOCR.class);
-                startActivity(intent);
+                Intent intentUser = new Intent(getApplicationContext(),UserOCR.class);
+                startActivity(intentUser);
                 break;
             case "Pharmacist":
                 //pharmacist activity
+                Intent intentPharmacist = new Intent(getApplicationContext(),PharmacistActivity.class);
+                startActivity(intentPharmacist);
                 break;
             case "Admin":
                 //Admin Activity
