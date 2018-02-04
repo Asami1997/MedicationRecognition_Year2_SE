@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1E88E5"
+    tools:context="com.project.year2.medicationrecognition.UserOCR">
+
+    <TextView
+        android:id="@+id/uuerGuied1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/user_guied1"
+        android:gravity="center"
+        android:textColor="#212121"
+        android:textSize="26sp"/>
+
+    <Button
+        android:id="@+id/button_processed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/uuerGuied1"
+        android:layout_marginTop="14dp"
+        android:onClick="openCamera"
+        android:text="Take Image" />
+
+    <TextView
+        android:id="@+id/resultsTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button_processed"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:textColor="#212121"
+        android:textSize="24sp"
+        android:layout_marginTop="20dp"
+        android:text="@string/results"/>
+      <LinearLayout
+          android:id="@+id/resultsLinerLayout"
+          android:orientation="vertical"
+          android:layout_width="match_parent"
+          android:layout_marginTop="10dp"
+          android:layout_below="@id/resultsTextView"
+          android:layout_height="wrap_content">
+
+          <TextView
+              android:id="@+id/nameTextView"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:text="@string/name"
+              android:textColor="#212121"
+              android:textSize="20sp" />
+
+          <TextView
+              android:id="@+id/ageTextView"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:textSize="20sp"
+              android:layout_marginTop="5dp"
+              android:textColor="#212121"
+              android:text="@string/age" />
+          <TextView
+              android:id="@+id/genderTextView"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:textSize="20sp"
+              android:layout_marginTop="5dp"
+              android:textColor="#212121"
+              android:text="@string/gender" />
+
+          <TextView
+              android:id="@+id/birthDateTextView"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textSize="20sp"
+              android:layout_marginTop="5dp"
+              android:textColor="#212121"
+              android:text="@string/birthDate" />
+          <TextView
+              android:id="@+id/phoneTextView"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textSize="20sp"
+              android:layout_marginTop="5dp"
+              android:textColor="#212121"
+              android:text="@string/phone" />
+          <TextView
+              android:id="@+id/rxTextView"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textSize="20sp"
+              android:layout_marginTop="5dp"
+
+              android:textColor="#212121"
+              android:text="@string/rx" />
+      </LinearLayout>
+
+    <Button
+        android:id="@+id/sendTransactionButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/resultsLinerLayout"
+        android:layout_marginTop="40dp"
+        android:onClick="sendTransaction"
+        android:text="@string/sendRequest" />
+</RelativeLayout>

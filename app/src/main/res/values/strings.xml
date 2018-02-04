@@ -31,4 +31,15 @@
         <item>d.o.b</item>
         <item>birth date</item>
     </string-array>
+    
+    <string name="user_guied1">Please Take A Photo Of Your Prescription</string>
+    <string name="name">Patient Name :</string>
+    <string name="age">Age :</string>
+    <string name="gender">Gender :</string>
+    <string name="birthDate">BirthDate :</string>
+    <string name="phone">Phone :
+    </string><string name="rx">Rx :</string>
+    <string name="sendRequest">Send Request To Pharmacy :</string>
+    <string name="results">Results :</string>
+
 </resources>

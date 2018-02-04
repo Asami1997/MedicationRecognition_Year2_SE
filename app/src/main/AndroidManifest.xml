@@ -24,7 +24,7 @@
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="ocr" />
 
-        <activity android:name=".UserOCR"></activity>
+        <activity android:name=".UserOCR" android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

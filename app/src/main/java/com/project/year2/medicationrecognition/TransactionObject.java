@@ -1,5 +1,7 @@
 package com.project.year2.medicationrecognition;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 /**
@@ -8,20 +10,27 @@ import java.util.ArrayList;
 
 public class TransactionObject {
 
-    private String NAME ;
-    private String  AGE;
-    private String PHONE;
-    private String BIRTHDATE;
-    private ArrayList<String>rxArrayList;
+    public String NAME ;
+    public String  AGE;
+    public String PHONE;
+    public String BIRTHDATE;
+    public String GENDER;
+    public String DRUGS;
 
+    public TransactionObject(){
+
+    }
     public TransactionObject(String name , String age , String phone , String birthDate
-    , ArrayList<String> rX) {
+    ,String gender, String drugs) {
 
            this.NAME = name;
            this.AGE = age;
            this.PHONE = phone;
            this.BIRTHDATE = birthDate;
-           this.rxArrayList = rX;
+           this.GENDER = gender;
+           this.DRUGS = drugs;
+        Log.i("drugscaptial",DRUGS);
+        Log.i("drugssmall",drugs);
 
     }
 }

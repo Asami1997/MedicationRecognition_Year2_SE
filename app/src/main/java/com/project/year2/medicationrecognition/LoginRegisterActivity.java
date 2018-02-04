@@ -282,7 +282,8 @@ public class LoginRegisterActivity extends AppCompatActivity implements View.OnC
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthStateListner);
-    }
+
+        }
 
     @Override
     public void onStop() {

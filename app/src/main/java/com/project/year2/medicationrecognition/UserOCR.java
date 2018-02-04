@@ -5,7 +5,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -14,7 +13,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,21 +20,26 @@ import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.jar.Attributes;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class UserOCR extends AppCompatActivity {
 
     //View in our layout
 
-    ImageView image_view;
+
     StringBuilder stringBuilder;
     private static final int TAKE_PICTURE = 1;
     private String[] DATE_Dictionary;
@@ -51,18 +54,50 @@ public class UserOCR extends AppCompatActivity {
     private String BIRTHDATE = "";
     private String AGE = "";
     private String PHONE = "";
+    private String DRUGS="";
     private ArrayList<String> tempArrayList;
+    private ArrayList<String>allDrugs;
     private TransactionObject transactionObject;
+    private TextView nameTextView;
+    private TextView ageTextView;
+    private TextView genderTextView;
+    private TextView birthDateTextView;
+    private TextView phoneTextView;
+    private TextView rXTextView;
+    DatabaseReference myRef;
+    private FirebaseAuth mAuth;
+    DatabaseReference ref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        image_view = (ImageView) findViewById(R.id.panadolImageView);
+        setContentView(R.layout.activity_user_ocr);
+
+        myRef = FirebaseDatabase.getInstance().getReference().child("Drugs");
+
+        ref = FirebaseDatabase.getInstance().getReference();
+
+        mAuth =  FirebaseAuth.getInstance();
+        //initializing textview
+
+        nameTextView = (TextView) findViewById(R.id.nameTextView);
+
+        ageTextView = (TextView) findViewById(R.id.ageTextView);
+
+        genderTextView = (TextView) findViewById(R.id.genderTextView);
+
+        birthDateTextView = (TextView) findViewById(R.id.birthDateTextView);
+
+        phoneTextView = (TextView) findViewById(R.id.phoneTextView);
+
+        rXTextView = (TextView) findViewById(R.id.rxTextView);
         //Dictionary array in string.xml file
         DATE_Dictionary = getResources().getStringArray(R.array.dateArray);
-        detailsList = new ArrayList<String>();
+        detailsList = new ArrayList<>();
+        tempArrayList = new ArrayList<>();
+        allDrugs = new ArrayList<>();
         toBeChecked = new ArrayList<>();
         stringBuilder = new StringBuilder();
+
     }
 
     public void extractText(Bitmap bitmap) {
@@ -122,8 +157,8 @@ public class UserOCR extends AppCompatActivity {
             extractPhone(detectedText.toString());
             extractRx(detectedText.toString());
 
-            //create a transaction object after data has been extracted
-            transactionObject = new TransactionObject(NAME,AGE,PHONE,BIRTHDATE,tempArrayList);
+            Log.i("drugsrx",DRUGS);
+
         }
     }
 
@@ -153,14 +188,15 @@ public class UserOCR extends AppCompatActivity {
                     try {
                         //This will retrieve the image from the given URI as a bitmap
                         bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, imageTaken);
-
-                        image_view.setImageBitmap(bitmap);
+                        Log.i("valuecamera","yes");
                         // extract text in the image taken by user
                         extractText(bitmap);
                     } catch (Exception e) {
-                        Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT)
-                                .show();
-                        Toast.makeText(this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT)
+                         //       .show();
+                       // Toast.makeText(this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+
+                        Log.i("valueExcption",e.getMessage());
                     }
                 }
         }
@@ -194,6 +230,11 @@ public class UserOCR extends AppCompatActivity {
                     addToList(NAME);
                 }
                 Log.i("valuename", NAME);
+                if(NAME != null){
+                    //append to nameTextView
+
+                    nameTextView.append(" " + NAME);
+                }
             }
 
             //extract age
@@ -214,6 +255,11 @@ public class UserOCR extends AppCompatActivity {
                     }
                 }
 
+                if(AGE != null){
+                    //append to nameTextView
+
+                    ageTextView.append(" " + AGE);
+                }
                 Log.i("valueage", AGE);
             }
 
@@ -248,6 +294,11 @@ public class UserOCR extends AppCompatActivity {
                         BIRTHDATE = splitedArray[i + 1];
                         addToList(BIRTHDATE);
                     }
+                    if(BIRTHDATE != null){
+                        //append to nameTextView
+
+                        birthDateTextView.append(" " + BIRTHDATE);
+                    }
                     Log.i("valuedate", BIRTHDATE);
                 }
             }
@@ -271,6 +322,13 @@ public class UserOCR extends AppCompatActivity {
                 GENDER = "Female";
             }
         }
+
+        if(GENDER != null){
+            //append to nameTextView
+
+            genderTextView.append(" " + GENDER);
+        }
+
         Log.i("valuegender", GENDER);
     }
 
@@ -299,8 +357,14 @@ public class UserOCR extends AppCompatActivity {
 
                     PHONE = splitedArray[i + 1];
                     addToList(PHONE);
-
                 }
+
+                if(PHONE != null){
+                    //append to nameTextView
+
+                    phoneTextView.append(" " + PHONE);
+                }
+
                 Log.i("valuephone", PHONE);
             }
         }
@@ -322,12 +386,83 @@ public class UserOCR extends AppCompatActivity {
             }
         }
 
+        myRef.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //Get map of users in datasnapshot
+                        Log.i("here","yes");
+                        getAllDrugsIngredient((Map<String,Object>) dataSnapshot.getValue());
+
+                        //create a transaction object after all data has been extracted
+                        transactionObject = new TransactionObject(NAME,AGE,PHONE,BIRTHDATE,GENDER,DRUGS);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //handle databaseError
+                    }
+                });
+    }
+
+    //gets all drugs and their active ingredients from the database
+    private void getAllDrugsIngredient(Map<String, Object> value) {
+
+        Log.i("valuehere","yes");
+        ArrayList<String> activeIngredients = new ArrayList<>();
+
+        //iterate through each user, ignoring their UID
+        for (Map.Entry<String, Object> entry : value.entrySet()){
+
+            //Get drugs map
+            Map singleDrug = (Map) entry.getValue();
+            //save drug name into arraylist
+            allDrugs.add(entry.getKey());
+            Log.i("valuedrug",entry.getKey());
+            //Get active ingredient field and append to list
+            activeIngredients.add( singleDrug.get("active_ingredient").toString());
+        }
+
+        prescriptionDrug();
+        Log.i("drugstext",DRUGS);
+        System.out.println(activeIngredients.toString());
+
+    }
+
+    private void prescriptionDrug() {
+
+        for(String line : tempArrayList){
+
+            for(String drug : allDrugs){
+
+                if(line.toLowerCase().contains(drug.toLowerCase())){
+
+                    Log.i("drugfound",drug);
+
+                    rXTextView.append(" , " + drug);
+                    DRUGS+=" " + drug;
+                }
+            }
+        }
+
     }
 
     public void addToList(String item){
 
-        toBeChecked.add(item);
+        if(item != null){
+            toBeChecked.add(item);
+        }
     }
+
+    //send transaction to firebase
+    public void sendTransaction(View view){
+
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        ref.child("Transactions").child(user.getUid()).setValue(transactionObject);
+    }
+
+
 
     //To  Prevent user from going back LoginRegister Activity
     @Override
