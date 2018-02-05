@@ -55,6 +55,7 @@ public class UserOCR extends AppCompatActivity {
     private String AGE = "";
     private String PHONE = "";
     private String DRUGS="";
+    private String EMAIL = "";
     private ArrayList<String> tempArrayList;
     private ArrayList<String>allDrugs;
     private TransactionObject transactionObject;
@@ -69,10 +70,16 @@ public class UserOCR extends AppCompatActivity {
     private DatabaseReference ref;
     private Bitmap preprocessed_bitmap;
     private Preprocessing preprocessing;
+    FirebaseUser user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_ocr);
+
+        //current user
+        user = mAuth.getCurrentUser();
+
+        EMAIL = user.getEmail();
 
         preprocessing = new Preprocessing();
 
@@ -413,7 +420,7 @@ public class UserOCR extends AppCompatActivity {
                         getAllDrugsIngredient((Map<String,Object>) dataSnapshot.getValue());
 
                         //create a transaction object after all data has been extracted
-                        transactionObject = new TransactionObject(NAME,AGE,PHONE,BIRTHDATE,GENDER,DRUGS);
+                        transactionObject = new TransactionObject(NAME,AGE,PHONE,BIRTHDATE,GENDER,EMAIL,DRUGS);
                     }
 
                     @Override

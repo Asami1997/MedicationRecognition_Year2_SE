@@ -16,12 +16,13 @@ public class TransactionObject {
     public String BIRTHDATE;
     public String GENDER;
     public String DRUGS;
+    public String EMAIL;
 
     public TransactionObject(){
 
     }
     public TransactionObject(String name , String age , String phone , String birthDate
-    ,String gender, String drugs) {
+    ,String gender,String email, String drugs) {
 
            this.NAME = name;
            this.AGE = age;
@@ -29,8 +30,6 @@ public class TransactionObject {
            this.BIRTHDATE = birthDate;
            this.GENDER = gender;
            this.DRUGS = drugs;
-        Log.i("drugscaptial",DRUGS);
-        Log.i("drugssmall",drugs);
-
+           this.EMAIL = email;
     }
 }
