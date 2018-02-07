@@ -49,12 +49,6 @@ public class PharmacistActivity extends AppCompatActivity {
 
         getFireBaseTransactions();
 
-        prepareCardViewDetails();
-
-        transactionAdapter = new TransactionAdapter(this,pharamTransactions);
-
-        recyclerView.setAdapter(transactionAdapter);
-
     }
 
     private void prepareCardViewDetails() {
@@ -63,6 +57,9 @@ public class PharmacistActivity extends AppCompatActivity {
 
             pharamTransactions.add(new PharamTransaction(transaction.EMAIL,transaction.NAME));
         }
+        Log.i("sizepharma",String.valueOf(pharamTransactions.size()));
+
+        setRecyclerViewAdapter();
     }
 
     private void getFireBaseTransactions() {
@@ -99,8 +96,21 @@ public class PharmacistActivity extends AppCompatActivity {
                     singleTransaction.get("BIRTHDATE").toString(),singleTransaction.get("GENDER").toString(),
                     singleTransaction.get("EMAIL").toString(),singleTransaction.get("DRUGS").toString());
 
+            Log.i("sizeemail",transactionObject.EMAIL);
+            Log.i("sizename",transactionObject.NAME);
+
             transactionObjects.add(transactionObject);
         }
+        Log.i("sizePtrans",String.valueOf(transactionObjects.size()));
 
+        prepareCardViewDetails();
+
+    }
+
+    private void setRecyclerViewAdapter(){
+
+        transactionAdapter = new TransactionAdapter(this,pharamTransactions);
+
+        recyclerView.setAdapter(transactionAdapter);
     }
 }

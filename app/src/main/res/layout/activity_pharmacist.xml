@@ -7,9 +7,20 @@
     android:background="#1E88E5"
     tools:context="com.project.year2.medicationrecognition.PharmacistActivity">
 
+  <TextView
+      android:id="@+id/guiedPharmacist1"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/pharmacistguied1"
+      android:gravity="center"
+      android:textSize="24sp"
+      android:textColor="#000000"
+      />
+
   <android.support.v7.widget.RecyclerView
       android:id="@+id/transactionsRecyclerView"
       android:layout_width="match_parent"
+      android:layout_marginTop="50dp"
       android:layout_height="match_parent">
 
   </android.support.v7.widget.RecyclerView>

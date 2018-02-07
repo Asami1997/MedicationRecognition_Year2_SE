@@ -42,5 +42,5 @@
     <string name="rx">Rx :</string>
     <string name="sendRequest">Send Request To Pharmacy :</string>
     <string name="results">Results :</string>
-
+    <string name="pharmacistguied1">All Transactions</string>
 </resources>

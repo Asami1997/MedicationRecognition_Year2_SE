@@ -38,8 +38,6 @@ import java.util.regex.Pattern;
 public class UserOCR extends AppCompatActivity {
 
     //View in our layout
-
-
     StringBuilder stringBuilder;
     private static final int TAKE_PICTURE = 1;
     private String[] DATE_Dictionary;
@@ -77,9 +75,6 @@ public class UserOCR extends AppCompatActivity {
         setContentView(R.layout.activity_user_ocr);
 
         //current user
-        user = mAuth.getCurrentUser();
-
-        EMAIL = user.getEmail();
 
         preprocessing = new Preprocessing();
 
@@ -201,7 +196,7 @@ public class UserOCR extends AppCompatActivity {
                         bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, imageTaken);
                         Log.i("valuecamera","yes");
 
-                        preprocessBitmap(bitmap);
+                   //     preprocessBitmap(bitmap);
                         // extract text in the image taken by user
                         extractText(bitmap);
                     } catch (Exception e) {
@@ -418,6 +413,10 @@ public class UserOCR extends AppCompatActivity {
                         //Get map of users in datasnapshot
                         Log.i("here","yes");
                         getAllDrugsIngredient((Map<String,Object>) dataSnapshot.getValue());
+
+                        user = mAuth.getCurrentUser();
+
+                        EMAIL = user.getEmail();
 
                         //create a transaction object after all data has been extracted
                         transactionObject = new TransactionObject(NAME,AGE,PHONE,BIRTHDATE,GENDER,EMAIL,DRUGS);

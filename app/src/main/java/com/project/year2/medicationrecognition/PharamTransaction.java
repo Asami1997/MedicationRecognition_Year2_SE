@@ -6,7 +6,7 @@ package com.project.year2.medicationrecognition;
 
 public class PharamTransaction {
 
-    private String Email;
+    public String Email;
     private String Name;
 
     public PharamTransaction(String email, String name) {
