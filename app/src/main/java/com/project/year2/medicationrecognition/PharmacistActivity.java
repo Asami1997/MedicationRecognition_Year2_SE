@@ -1,5 +1,7 @@
 package com.project.year2.medicationrecognition;
 
+import android.content.Intent;
+import android.provider.SyncStateContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,7 +26,7 @@ public class PharmacistActivity extends AppCompatActivity {
     DatabaseReference transactionsReference;
 
     //contain all transactions
-    ArrayList<TransactionObject> transactionObjects;
+    public static ArrayList<TransactionObject> transactionObjects;
 
     ArrayList<PharamTransaction> pharamTransactions;
 
@@ -112,5 +114,15 @@ public class PharmacistActivity extends AppCompatActivity {
         transactionAdapter = new TransactionAdapter(this,pharamTransactions);
 
         recyclerView.setAdapter(transactionAdapter);
+    }
+
+    //start transaction activity
+    public void startTransactionActivity(int position){
+
+        Intent intent = new Intent(PharmacistActivity.this, TransactionDetails.class);
+
+        intent.putExtra("transactionObject",transactionObjects.get(position));
+
+        startActivity(intent);
     }
 }

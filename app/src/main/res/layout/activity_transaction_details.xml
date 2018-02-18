@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1E88E5"
+    tools:context="com.project.year2.medicationrecognition.TransactionDetails">
+
+    <TextView
+        android:id="@+id/detailsTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pharmacistguied2"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:textColor="#000"/>
+
+    <LinearLayout
+        android:id="@+id/p_detailsLinerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#ffff"
+        android:layout_below="@id/detailsTextView">
+
+        <TextView
+            android:id="@+id/d_nameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/name"
+            android:textColor="#212121"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/d_ageTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginTop="5dp"
+            android:textColor="#212121"
+            android:text="@string/age" />
+        <TextView
+            android:id="@+id/d_genderTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginTop="5dp"
+            android:textColor="#212121"
+            android:text="@string/gender" />
+
+        <TextView
+            android:id="@+id/d_birthDateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginTop="5dp"
+            android:textColor="#212121"
+            android:text="@string/birthDate" />
+        <TextView
+            android:id="@+id/d_phoneTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginTop="5dp"
+            android:textColor="#212121"
+            android:text="@string/phone" />
+        <TextView
+            android:id="@+id/d_rxTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginTop="5dp"
+            android:textColor="#212121"
+            android:text="@string/rx" />
+
+    </LinearLayout>
+
+</RelativeLayout>

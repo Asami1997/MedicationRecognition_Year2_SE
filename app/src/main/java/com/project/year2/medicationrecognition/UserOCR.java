@@ -464,7 +464,7 @@ public class UserOCR extends AppCompatActivity {
                     Log.i("drugfound",drug);
 
                     rXTextView.append(" , " + drug);
-                    DRUGS+=" " + drug;
+                    DRUGS+="," + drug;
                 }
             }
         }

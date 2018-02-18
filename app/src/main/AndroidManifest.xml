@@ -27,7 +27,8 @@
         <activity
             android:name=".UserOCR"
             android:screenOrientation="portrait" />
-        <activity android:name=".PharmacistActivity"></activity>
+        <activity android:name=".PharmacistActivity" />
+        <activity android:name=".TransactionDetails"></activity>
     </application>
 
 </manifest>
