@@ -43,4 +43,7 @@
     <string name="results">Results :</string>
     <string name="pharmacistguied1">All Transactions</string>
     <string name="pharmacistguied2">Transaction Details</string>
+    <string name="pharmacistguied3">Inventory</string>
+    <string name="pharamcistguied4">Look Up For Alternatives ?</string>
+    <string name="pharmacisttguied5">Alternatives Found</string>
 </resources>

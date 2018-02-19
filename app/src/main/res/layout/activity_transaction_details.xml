@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -73,6 +75,60 @@
             android:layout_marginTop="5dp"
             android:textColor="#212121"
             android:text="@string/rx" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/inventoryTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pharmacistguied3"
+        android:layout_below="@id/p_detailsLinerLayout"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:textColor="#000"/>
+
+    <LinearLayout
+        android:id="@+id/inventoryLinerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#ffff"
+        android:layout_below="@id/inventoryTextView">
+
+        <TextView
+            android:id="@+id/inventoryDetailsTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="20sp"
+            android:textColor="#212121"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/alternativesDetailsTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/inventoryLinerLayout"
+        android:text="@string/pharmacisttguied5"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:textColor="#000"/>
+    <LinearLayout
+        android:id="@+id/alternativesLinerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#ffff"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/alternativesDetailsTextView">
+
+        <TextView
+            android:id="@+id/alternativesView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="24sp"
+            android:textColor="#000"/>
 
     </LinearLayout>
 
