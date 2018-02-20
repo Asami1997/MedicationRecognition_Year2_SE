@@ -5,13 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Created by Nixon on 5/11/2017.
  */
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    public static final String DATABASE_NAME = "medication.db";
+    public static final String DATABASE_NAME = "medication";
     public static final String TABLE_NAME = "medication_table";
     public static final String COLUMN_1 = "ID";
     public static final String COLUMN_2 = "NAME";
@@ -22,17 +23,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     {
         super(context, DATABASE_NAME, null, 1);
     }
-    private static final String Create_Table_medication = "CREATE TABLE " + TABLE_NAME + "(" + COLUMN_1 + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_2 + " TEXT," + COLUMN_3 + " TEXT," + COLUMN_4 +" INTEGER);";
+    private static final String Create_Table_medication = "CREATE TABLE " + TABLE_NAME + " (" + COLUMN_1 + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_2 + " TEXT," + COLUMN_3 + " TEXT," + COLUMN_4 +" INTEGER);";
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        Log.e("Taable>>>>>>>",Create_Table_medication);
+        System.out.println("Create_Table_medication :::: " + Create_Table_medication);
         db.execSQL(Create_Table_medication);
+
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+       db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
 
         onCreate(db);
     }
@@ -52,6 +56,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         else
             return true;
     }
+
 
 
     public Cursor displayData()
@@ -88,6 +93,37 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.rawQuery(query,null);
     }
 
+    public  Medicine getSelectedMedicine(String medicineName){
 
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            String query = "SELECT * FROM " + TABLE_NAME + "  where  NAME ='" + medicineName+"'";
+            Log.e(">>>>>>>>>>>>",query);
+
+            Cursor c = db.rawQuery(query, null);
+
+            if (c.moveToNext()) {
+                int id = c.getInt(0);
+                String name = c.getString(1);
+                String ingedients = c.getString(2);
+                int inventory = c.getInt(3);
+
+                Medicine m = new Medicine();
+                m.setId(id);
+                m.setName(name);
+                m.setIngredients(ingedients);
+                m.setInventory(inventory);
+
+                return m;
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
+
+        }
+
+    return null;
+
+
+    }
 
 }
