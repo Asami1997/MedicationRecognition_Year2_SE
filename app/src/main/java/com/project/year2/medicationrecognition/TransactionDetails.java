@@ -1,28 +1,17 @@
 package com.project.year2.medicationrecognition;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.fasterxml.jackson.databind.ser.SerializerCache;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class TransactionDetails extends AppCompatActivity {
 
@@ -38,14 +27,22 @@ public class TransactionDetails extends AppCompatActivity {
     private ArrayList<String> outOfStockDrugs;
     TransactionObject transactionObject;
     TextView alternativesTextView;
-    AlternativeDrugs alternativeDrugs;
+    String test;
+    ArrayList<String> alternatives ;
     //will contain all the drugs in the transaction
-    private String[] drugs;
+
+    private String drugs[];
+  //  public Multimap<String, String> alterantives = ArrayListMultimap.create();
+   // DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+  //  boolean doneFindingAlternatives = false;
+  //  TransactionDetails transactionDetails = new TransactionDetails();
+    public String details= "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction_details);
 
+        alternativesTextView = (TextView) findViewById(R.id.alternativesView);
         Intent intent = getIntent();
 
         //contains all the transaction details
@@ -53,6 +50,8 @@ public class TransactionDetails extends AppCompatActivity {
 
 
         drugsReference = FirebaseDatabase.getInstance().getReference().child("Drugs");
+
+        alternatives = new ArrayList<String>();
 
         outOfStockDrugs = new ArrayList<>();
 
@@ -65,15 +64,6 @@ public class TransactionDetails extends AppCompatActivity {
          saveTransactionDrugsToArray();
 
          checkInventory();
-
-         alternativeDrugs = new AlternativeDrugs(drugs);
-
-         addToAlternativesLayout();
-    }
-
-    public void addToAlternativesLayout() {
-
-        alternativesTextView.append(alternativeDrugs.details);
     }
 
     private void intializeViews() {
@@ -86,7 +76,6 @@ public class TransactionDetails extends AppCompatActivity {
         rXTextView = (TextView) findViewById(R.id.d_rxTextView);
         inverntoryLayout = (LinearLayout) findViewById(R.id.inventoryLinerLayout);
         inventoryDetailsTextView = (TextView) findViewById(R.id.inventoryDetailsTextView);
-        alternativesTextView = (TextView) findViewById(R.id.alternativesView);
 
     }
 
@@ -132,6 +121,9 @@ public class TransactionDetails extends AppCompatActivity {
                     if(inventory == 0){
                         outOfStockDrugs.add(drug.toLowerCase());
                         addToInventoryLayout(drug);
+                        Log.i("outofstock",outOfStockDrugs.toString());
+                        getActiveIngredints(drug);
+
                     }
                 }
 
@@ -139,9 +131,74 @@ public class TransactionDetails extends AppCompatActivity {
                 public void onCancelled(DatabaseError databaseError) {
 
                 }
+
             });
         }
 
     }
 
+    public void getActiveIngredints(final String drug) {
+
+            Log.i("drugdss",drug);
+
+            DatabaseReference singleDrug = drugsReference.child(drug.toLowerCase().trim());
+            singleDrug.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    String active_ingredient = (String) dataSnapshot.child("active_ingredient").getValue();
+
+                    Log.i("active_ingredient",String.valueOf(active_ingredient));
+
+                    getAlternativeForDrug(drug,active_ingredient);
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+    }
+
+    private void getAlternativeForDrug(final String drug, final String active_ingredient) {
+
+        drugsReference
+                .orderByChild("active_ingredient").equalTo(active_ingredient)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot child :dataSnapshot.getChildren()){
+
+                            if(!(child.getKey().replaceAll("\\s+","").
+                                    equalsIgnoreCase(drug.toLowerCase().replaceAll("\\s+",""))) &&
+                                    !child.child("inventory").getValue().toString().equals("0")){
+
+                                Log.i("drug",drug.toLowerCase());
+
+                                String alternativeActiveIngredient = child.child("active_ingredient").getValue().toString();
+                                String alternative = child.getKey();
+                                Log.i("alternativeActiveingnt", alternativeActiveIngredient);
+                                if (alternativeActiveIngredient.equals(active_ingredient)) {
+                                    Log.i("alternative",child.getKey());
+
+                                    String tempString = "\n" + drug + ": " + alternative;
+
+                                    if(!alternatives.contains(tempString)){
+
+                                        details+=tempString;
+
+                                        alternatives.add(tempString);
+
+                                        alternativesTextView.append(tempString);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        throw databaseError.toException();
+                    }
+                });
+    }
 }
