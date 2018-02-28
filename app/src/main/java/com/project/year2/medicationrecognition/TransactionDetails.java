@@ -118,13 +118,17 @@ public class TransactionDetails extends AppCompatActivity {
 
                     Log.i("temp",String.valueOf(inventory));
 
-                    if(inventory == 0){
-                        outOfStockDrugs.add(drug.toLowerCase());
-                        addToInventoryLayout(drug);
-                        Log.i("outofstock",outOfStockDrugs.toString());
-                        getActiveIngredints(drug);
+                    if(inventory != null){
 
+                        if(inventory == 0){
+                            outOfStockDrugs.add(drug.toLowerCase());
+                            addToInventoryLayout(drug);
+                            Log.i("outofstock",outOfStockDrugs.toString());
+                            getActiveIngredints(drug);
+
+                        }
                     }
+
                 }
 
                 @Override

@@ -49,6 +49,7 @@ android {
         testCompile 'junit:junit:4.12'
         compile 'com.google.android.gms:play-services-vision:11.0.4'
         compile 'com.android.support:multidex:1.0.2'
+        compile 'com.google.firebase:firebase-messaging:11.0.4'
         //  implementation files('libs/opennlp-tools-1.8.4.jar')
         //implementation files('libs/opennlp-uima-1.8.4.jar')
     }

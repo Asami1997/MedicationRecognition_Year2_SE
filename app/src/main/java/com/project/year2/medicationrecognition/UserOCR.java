@@ -67,7 +67,7 @@ public class UserOCR extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference ref;
     private Bitmap preprocessed_bitmap;
-    private Preprocessing preprocessing;
+    //private Preprocessing preprocessing;
     FirebaseUser user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +76,7 @@ public class UserOCR extends AppCompatActivity {
 
         //current user
 
-        preprocessing = new Preprocessing();
+      //  preprocessing = new Preprocessing();
 
         myRef = FirebaseDatabase.getInstance().getReference().child("Drugs");
 
@@ -209,6 +209,8 @@ public class UserOCR extends AppCompatActivity {
                 }
         }
     }
+
+
 
     //apply preprocessing to image before extracting text
     private void preprocessBitmap(Bitmap bitmap) {
