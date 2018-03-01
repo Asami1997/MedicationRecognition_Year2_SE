@@ -64,7 +64,7 @@ public class PreprocessingActivity extends AppCompatActivity {
                 int R = Color.red(pixel);
                 int G = Color.green(pixel);
                 int B = Color.blue(pixel);
-                if (R < 162 && G < 162 && B < 162)
+                if (R < 130 && G < 130 && B < 130)
                     bmap.setPixel(x, y, Color.BLACK);
             }
         }
@@ -74,7 +74,7 @@ public class PreprocessingActivity extends AppCompatActivity {
                 int R = Color.red(pixel);
                 int G = Color.green(pixel);
                 int B = Color.blue(pixel);
-                if (R > 162 && G > 162 && B > 162)
+                if (R > 130 && G > 130 && B > 130)
                     bmap.setPixel(x, y, Color.WHITE);
             }
         }
