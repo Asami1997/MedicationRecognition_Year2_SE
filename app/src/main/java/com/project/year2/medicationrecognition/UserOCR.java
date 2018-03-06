@@ -79,8 +79,11 @@ public class UserOCR extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_ocr);
 
+        //ask for storage permission
+
         isStoragePermissionGranted();
 
+        //If version is above 24 , then
         if(Build.VERSION.SDK_INT>=24){
             try{
                 Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
@@ -89,11 +92,6 @@ public class UserOCR extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-
-
-        //current user
-
-      //  preprocessing = new Preprocessing();
 
         myRef = FirebaseDatabase.getInstance().getReference().child("Drugs");
 

@@ -248,10 +248,10 @@ public class LoginRegisterActivity extends AppCompatActivity implements View.OnC
                 startActivity(intentPharmacist);
                 break;
             case "Admin":
-                //Admin Activity
+                Intent intentAdmin = new Intent(getApplicationContext(),AdminActivity.class);
+                startActivity(intentAdmin);
                 break;
         }
-
     }
 
     private void registerUser() {
