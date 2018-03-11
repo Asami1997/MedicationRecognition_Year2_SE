@@ -29,7 +29,8 @@
             android:screenOrientation="portrait" />
         <activity android:name=".PharmacistActivity" />
         <activity android:name=".TransactionDetails" />
-        <activity android:name=".AdminActivity"></activity>
+        <activity android:name=".AdminActivity" />
+        <activity android:name=".AdminDetails"></activity>
     </application>
 
 </manifest>

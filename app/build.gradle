@@ -32,6 +32,10 @@ android {
         exclude 'META-INF/DEPENDENCIES'
     }
 
+    repositories {
+        maven { url "https://jitpack.io" }
+    }
+
     dependencies {
         compile fileTree(include: ['*.jar'], dir: 'libs')
         androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -50,6 +54,7 @@ android {
         compile 'com.google.android.gms:play-services-vision:11.0.4'
         compile 'com.android.support:multidex:1.0.2'
         compile 'com.google.firebase:firebase-messaging:11.0.4'
+        compile 'com.github.PhilJay:MPAndroidChart:v2.2.4'
         //  implementation files('libs/opennlp-tools-1.8.4.jar')
         //implementation files('libs/opennlp-uima-1.8.4.jar')
     }
@@ -61,4 +66,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:11.0.4'
     implementation 'com.android.support:recyclerview-v7:26.1.0'
     implementation 'com.android.support:cardview-v7:26.1.0'
+
 }

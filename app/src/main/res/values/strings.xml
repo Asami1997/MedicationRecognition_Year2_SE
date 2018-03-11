@@ -46,4 +46,10 @@
     <string name="pharmacistguied3">Inventory</string>
     <string name="pharamcistguied4">Look Up For Alternatives ?</string>
     <string name="pharmacisttguied5">Alternatives Found</string>
+    <string name="adminguied1">Active Ingredient :</string>
+    <string name="adminguied2">Dosage :</string>
+    <string name="adminguied3">Inventory :</string>
+    <string name="adminguied4">Frequency :</string>
+    <string name="adminguied5">Delete</string>
+    <string name="adminguied6">Edit</string>
 </resources>

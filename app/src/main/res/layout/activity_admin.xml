@@ -7,5 +7,27 @@
     android:background="#1E88E5"
     tools:context="com.project.year2.medicationrecognition.AdminActivity">
 
-    
+   <LinearLayout
+       android:id="@+id/drugsLinerLayout"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="vertical">
+
+       <ListView
+           android:id="@+id/drugsListView"
+           android:layout_width="match_parent"
+           android:layout_height="399dp">
+       </ListView>
+   </LinearLayout>
+
+    <ImageView
+        android:id="@+id/addImageView"
+        android:layout_width="65dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/drugsLinerLayout"
+        android:layout_marginEnd="31dp"
+        android:onClick="addDrug"
+        app:srcCompat="@drawable/addicon" />
+
 </RelativeLayout>

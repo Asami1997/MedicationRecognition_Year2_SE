@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1E88E5"
+    tools:context="com.project.year2.medicationrecognition.AdminDetails">
+
+    <TextView
+        android:id="@+id/a_drugName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:gravity="center"
+        android:textColor="#212121"/>
+
+
+        <LinearLayout
+            android:id="@+id/ingredientLinerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/a_drugName"
+            android:background="#ffff"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/a_activeIngredient"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/adminguied1"
+                android:textColor="#212121"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/ingredientButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/adminguied6"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/dosageLinerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffff"
+            android:layout_below="@id/ingredientLinerLayout"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/a_dosage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/adminguied2"
+                android:textColor="#212121"
+                android:textSize="20sp" />
+            <Button
+                android:id="@+id/dosageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/adminguied6"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/inventoryLinerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffff"
+            android:layout_below="@id/dosageLinerLayout"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/a_inventory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/adminguied3"
+                android:textColor="#212121"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/inventoryButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/adminguied6"/>
+        </LinearLayout>
+
+
+    <!-- bar chart to display drug stats -->
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/barChart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/inventoryLinerLayout"
+        android:layout_marginTop="10dp">
+    </com.github.mikephil.charting.charts.BarChart>
+
+<!--
+    <Button
+        android:id="@+id/deleteButton"
+        android:onClick="deleteDrug"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="27dp"
+        android:text="@string/adminguied5"
+        android:shadowColor="@color/colorPrimaryDark"
+        android:background="#B22222"
+        android:textColor="#fff" />
+        -->
+</RelativeLayout>

@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder> {
 
-    //context deines where are you currently at , like which activity
+    //context defines where are you currently at , like which activity
     private Context mCtx;
     private List<PharamTransaction> transactionObjects;
     private PharmacistActivity pharmacistActivity = new PharmacistActivity();
