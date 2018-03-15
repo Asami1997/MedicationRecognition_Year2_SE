@@ -30,7 +30,8 @@
         <activity android:name=".PharmacistActivity" />
         <activity android:name=".TransactionDetails" />
         <activity android:name=".AdminActivity" />
-        <activity android:name=".AdminDetails"></activity>
+        <activity android:name=".AdminDetails" />
+        <activity android:name=".AddDrug"></activity>
     </application>
 
 </manifest>

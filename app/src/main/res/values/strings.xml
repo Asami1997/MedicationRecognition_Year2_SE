@@ -52,4 +52,10 @@
     <string name="adminguied4">Frequency :</string>
     <string name="adminguied5">Delete</string>
     <string name="adminguied6">Edit</string>
+    <string name="adminguied7">Add New Drug</string>
+    <string name="adminguied8">Name</string>
+    <string name="adminguied9">Active Ingredient</string>
+    <string name="adminguied10">Dosage</string>
+    <string name="adminguied11">Inventory</string>
+    <string name="adminguied12">Add</string>
 </resources>

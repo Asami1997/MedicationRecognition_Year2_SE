@@ -1,9 +1,12 @@
 package com.project.year2.medicationrecognition;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,6 +25,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Map;
+
+import static java.security.AccessController.getContext;
 
 public class AdminActivity extends AppCompatActivity {
 
@@ -129,9 +134,6 @@ public class AdminActivity extends AppCompatActivity {
 
     }
 
-    public void addDrug(View view){
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -144,6 +146,7 @@ public class AdminActivity extends AppCompatActivity {
 
         SearchView searchView = (SearchView) item.getActionView();
 
+        //to search through the listview
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -159,4 +162,15 @@ public class AdminActivity extends AppCompatActivity {
 
         return super.onCreateOptionsMenu(menu);
     }
+
+
+    public void addDrug(View view) {
+
+        //go to AddDrug Activity
+
+        Intent newDrug = new Intent(getApplicationContext(),AddDrug.class);
+
+        startActivity(newDrug);
+    }
+
 }

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1E88E5"
+    tools:context="com.project.year2.medicationrecognition.AddDrug">
+    <TextView
+        android:id="@+id/newDrug_tV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/adminguied7"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:textColor="#212121"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@id/newDrug_tV">
+
+        <EditText
+            android:id="@+id/add_drugName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="@string/adminguied8" />
+
+
+        <EditText
+            android:id="@+id/add_drugIngredinet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="@string/adminguied9" />
+
+
+        <EditText
+            android:id="@+id/add_drugDosage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="@string/adminguied10" />
+
+
+        <EditText
+            android:id="@+id/add_drugInventory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="@string/adminguied11" />
+
+
+        <Button
+            android:id="@+id/addDrugButton"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:elevation="10dp"
+            android:onClick="getViewsText"
+            android:layout_marginTop="20dp"
+            android:text="@string/adminguied12" />
+    </LinearLayout>
+
+</RelativeLayout>

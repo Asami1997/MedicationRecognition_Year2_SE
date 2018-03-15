@@ -3,6 +3,7 @@ package com.project.year2.medicationrecognition;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +18,10 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.w3c.dom.Text;
 
@@ -40,7 +45,7 @@ public class AdminDetails extends AppCompatActivity {
     BarChart barChart;
     BarData barData;
     BarDataSet barDataSet;
-
+    DatabaseReference drugsRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +60,8 @@ public class AdminDetails extends AppCompatActivity {
         drugDosage = String.valueOf(drugDetails.get("dosage"));
 
         drugInventory = String.valueOf(drugDetails.get("inventory"));
+
+        drugsRef = FirebaseDatabase.getInstance().getReference().child("Drugs");
 
         barEntries = new ArrayList<>();
 
@@ -152,7 +159,18 @@ public class AdminDetails extends AppCompatActivity {
     //this function delete the drug from the database
     public void deleteDrug(){
 
+        drugsRef.child(drugName).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Toast.makeText(AdminDetails.this, "Deleted From Database", Toast.LENGTH_LONG).show();
 
+                //return to previous activity
+
+                Intent intent = new Intent(getApplicationContext(),AdminActivity.class);
+
+                startActivity(intent);
+            }
+        });
     }
 
 
