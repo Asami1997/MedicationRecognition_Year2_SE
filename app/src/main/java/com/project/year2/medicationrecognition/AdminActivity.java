@@ -96,7 +96,6 @@ public class AdminActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Log.i("here", "yes");
                             getDrugDetails((Map<String, Object>) dataSnapshot.getValue());
-
                     }
 
                     @Override

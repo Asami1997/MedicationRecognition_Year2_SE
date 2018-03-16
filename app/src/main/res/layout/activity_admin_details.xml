@@ -15,14 +15,15 @@
         android:gravity="center"
         android:textColor="#212121"/>
 
-
         <LinearLayout
             android:id="@+id/ingredientLinerLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/a_drugName"
             android:background="#ffff"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:clickable="true"
+            android:focusable="true">
             <TextView
                 android:id="@+id/a_activeIngredient"
                 android:layout_width="match_parent"
@@ -35,6 +36,7 @@
                 android:id="@+id/ingredientButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="displayEditAlert"
                 android:layout_gravity="center"
                 android:text="@string/adminguied6"/>
         </LinearLayout>
@@ -59,6 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:onClick="displayEditAlert"
                 android:text="@string/adminguied6"/>
         </LinearLayout>
 
@@ -82,6 +85,7 @@
                 android:id="@+id/inventoryButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="displayEditAlert"
                 android:layout_gravity="center"
                 android:text="@string/adminguied6"/>
         </LinearLayout>
@@ -97,19 +101,4 @@
         android:layout_marginTop="10dp">
     </com.github.mikephil.charting.charts.BarChart>
 
-<!--
-    <Button
-        android:id="@+id/deleteButton"
-        android:onClick="deleteDrug"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="27dp"
-        android:text="@string/adminguied5"
-        android:shadowColor="@color/colorPrimaryDark"
-        android:background="#B22222"
-        android:textColor="#fff" />
-        -->
 </RelativeLayout>

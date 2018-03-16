@@ -2,14 +2,19 @@ package com.project.year2.medicationrecognition;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +24,7 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -46,6 +52,11 @@ public class AdminDetails extends AppCompatActivity {
     BarData barData;
     BarDataSet barDataSet;
     DatabaseReference drugsRef;
+    AlertDialog.Builder editAlert ;
+
+    //will contain new value from user when user edits ingredient , dosage , or inventory
+    String value = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,19 +64,16 @@ public class AdminDetails extends AppCompatActivity {
 
         drugDetails = getIntent().getExtras();
 
-        drugName = String.valueOf(drugDetails.get("drugName"));
-
-        drugIngredient = String.valueOf(drugDetails.get("activeIngredient"));
-
-        drugDosage = String.valueOf(drugDetails.get("dosage"));
-
-        drugInventory = String.valueOf(drugDetails.get("inventory"));
+        setDrugDetails(drugDetails.get("drugName").toString(),drugDetails.get("dosage").toString(),
+                drugDetails.get("inventory").toString(),drugDetails.get("activeIngredient").toString());
 
         drugsRef = FirebaseDatabase.getInstance().getReference().child("Drugs");
 
         barEntries = new ArrayList<>();
 
         dates = new ArrayList<>();
+
+        editAlert =  new AlertDialog.Builder(this);
 
         initializeViews();
 
@@ -132,6 +140,15 @@ public class AdminDetails extends AppCompatActivity {
 
     }
 
+    private void setDrugDetails(String name,String dosage,String inventory,String ingredinet){
+
+        drugName = name;
+        drugDosage = dosage;
+        drugInventory = inventory;
+        drugIngredient = ingredinet;
+
+    }
+
     private void addDataToTextViews() {
 
         name.append(" " + drugName);
@@ -159,9 +176,9 @@ public class AdminDetails extends AppCompatActivity {
     //this function delete the drug from the database
     public void deleteDrug(){
 
-        drugsRef.child(drugName).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+        drugsRef.child(drugName).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
+            public void onSuccess(Void aVoid) {
                 Toast.makeText(AdminDetails.this, "Deleted From Database", Toast.LENGTH_LONG).show();
 
                 //return to previous activity
@@ -222,5 +239,104 @@ public class AdminDetails extends AppCompatActivity {
         AlertDialog alert11 = builder1.create();
         alert11.show();
 
+    }
+
+    public void editData(View view, final String value){
+
+        switch (view.getId()){
+
+            case R.id.ingredientButton:
+
+
+                Toast.makeText(this,value, Toast.LENGTH_SHORT).show();
+
+                 DatabaseReference activeIngredientRef =  FirebaseDatabase.getInstance().getReference().child("Drugs").child(drugName)
+                        .child("active_ingredient");
+
+                 activeIngredientRef.setValue(value).addOnSuccessListener(new OnSuccessListener<Void>() {
+                     @Override
+                     public void onSuccess(Void aVoid) {
+
+                         Toast.makeText(AdminDetails.this, "Value Changed Successfully", Toast.LENGTH_SHORT).show();
+
+                         activeIngredient.setText("Active Ingredient : " + value);
+                     }
+                 });
+
+                break;
+            case R.id.dosageButton:
+
+                //edit
+                DatabaseReference dosaageRef =  FirebaseDatabase.getInstance().getReference().child("Drugs").child(drugName)
+                        .child("dosage");
+
+                dosaageRef.setValue(value).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                        Toast.makeText(AdminDetails.this, "Value Changed Successfully", Toast.LENGTH_SHORT).show();
+
+                        activeIngredient.setText("Dosage : " + value);
+
+                    }
+                });
+
+
+                break;
+            case R.id.inventoryButton:
+
+                DatabaseReference inventoryRef =  FirebaseDatabase.getInstance().getReference().child("Drugs").child(drugName)
+                        .child("inventory");
+
+                inventoryRef.setValue(value).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                        Toast.makeText(AdminDetails.this, "Value Changed Successfully", Toast.LENGTH_SHORT).show();
+
+                        activeIngredient.setText("Inventory : " + value);
+
+                    }
+                });
+
+                //edit
+                break;
+        }
+
+    }
+
+     public void displayEditAlert(final View view) {
+
+        final EditText edittext = new EditText(getApplicationContext());
+        edittext.setTextColor(Color.parseColor("#000000"));
+        editAlert.setTitle("Enter New Value");
+        editAlert.setView(edittext);
+
+        editAlert.setPositiveButton("Confirm Changes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+                value = edittext.getText().toString();
+
+                //passing the "view" object to know whih button was pressed.Which button triggered function displayEditAlert
+                editData(view,value);
+            }
+        });
+
+        editAlert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //
+            }
+        });
+
+        editAlert.show();
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Intent intent = new Intent(getApplicationContext(),AdminActivity.class);
+        startActivity(intent);
     }
 }
