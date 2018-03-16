@@ -20,6 +20,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.firebase.client.FirebaseError;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
@@ -33,9 +35,12 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
 import java.lang.reflect.Method;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -59,8 +64,10 @@ public class UserOCR extends AppCompatActivity {
     private String PHONE = "";
     private String DRUGS="";
     private String EMAIL = "";
+    int month;
     private ArrayList<String> tempArrayList;
     private ArrayList<String>allDrugs;
+    private ArrayList<String>drugsInImage;
     private TransactionObject transactionObject;
     private TextView nameTextView;
     private TextView ageTextView;
@@ -117,8 +124,20 @@ public class UserOCR extends AppCompatActivity {
         tempArrayList = new ArrayList<>();
         allDrugs = new ArrayList<>();
         toBeChecked = new ArrayList<>();
+        drugsInImage = new ArrayList<>();
         stringBuilder = new StringBuilder();
 
+        //cuurent month will be used later when updating requests on firebase
+        getCurrentMonth();
+    }
+
+    private void getCurrentMonth() {
+        java.util.Date date= new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        month = cal.get(Calendar.MONTH);
+
+        Toast.makeText(this, String.valueOf(month), Toast.LENGTH_SHORT).show();
     }
 
     public void extractText(Bitmap bitmap) {
@@ -409,8 +428,6 @@ public class UserOCR extends AppCompatActivity {
 
     public void extractRx(String ocrResult){
 
-        //array that will go to server
-
         Log.i("valuelist",toBeChecked.toString());
         String[] splitedArray = ocrResult.split("\\r?\\n");
         for(int i = 0 ; i<=splitedArray.length-1;i++){
@@ -480,6 +497,7 @@ public class UserOCR extends AppCompatActivity {
 
                     Log.i("drugfound",drug);
 
+                    drugsInImage.add(drug);
                     rXTextView.append(" , " + drug);
                     DRUGS+="," + drug;
                 }
@@ -501,6 +519,55 @@ public class UserOCR extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
 
         ref.child("Transactions").child(user.getUid()).setValue(transactionObject);
+
+        for(String drug : drugsInImage){
+
+            Log.i("drugnow",drug);
+            editRequestNumber(drug);
+
+        }
+    }
+
+    //the function edits how many requests has been made on the database for the drugs
+    private void editRequestNumber( final String drug) {
+
+        final DatabaseReference requestsRef = FirebaseDatabase.getInstance().getReference().child("Requests");
+
+        requestsRef.child(drug).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+                if (dataSnapshot.getValue() != null) {
+
+                        Toast.makeText(UserOCR.this, drug +  dataSnapshot.getValue().toString(), Toast.LENGTH_SHORT).show();
+
+                        String currentVlaue =  dataSnapshot.getValue().toString();
+
+
+                        int valueNew = Integer.parseInt(currentVlaue) + 1;
+
+                        requestsRef.child(drug).child("amount").setValue(String.valueOf(valueNew));
+
+                        requestsRef.child(drug).child("month").setValue(String.valueOf(month));
+
+
+                } else {
+
+                    requestsRef.child(drug).child("amount").setValue(String.valueOf(1));
+
+                    requestsRef.child(drug).child("month").setValue(String.valueOf(month));
+
+                    Toast.makeText(UserOCR.this, "null", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 

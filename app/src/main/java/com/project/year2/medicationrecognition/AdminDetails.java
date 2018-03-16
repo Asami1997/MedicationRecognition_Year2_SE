@@ -28,6 +28,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
@@ -53,7 +54,7 @@ public class AdminDetails extends AppCompatActivity {
     BarDataSet barDataSet;
     DatabaseReference drugsRef;
     AlertDialog.Builder editAlert ;
-
+    DatabaseReference reqRef;
     //will contain new value from user when user edits ingredient , dosage , or inventory
     String value = "";
 
@@ -75,11 +76,15 @@ public class AdminDetails extends AppCompatActivity {
 
         editAlert =  new AlertDialog.Builder(this);
 
+        reqRef = FirebaseDatabase.getInstance().getReference().child("Requests");
+
         initializeViews();
 
         addDataToTextViews();
 
         addDates();
+
+        getRequests();
 
         addBarEntries();
 
@@ -92,7 +97,12 @@ public class AdminDetails extends AppCompatActivity {
         barChart.setScaleEnabled(true);
     }
 
+    private void getRequests() {
+        
+    }
+
     private void addBarEntries() {
+
 
         barEntries.add(new BarEntry(0f,0));
 
