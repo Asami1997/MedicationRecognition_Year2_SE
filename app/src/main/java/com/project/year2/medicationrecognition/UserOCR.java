@@ -79,7 +79,7 @@ public class UserOCR extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference ref;
     private Bitmap preprocessed_bitmap;
-    //private Preprocessing preprocessing;
+    private Preprocessing preprocessing;
     FirebaseUser user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +118,9 @@ public class UserOCR extends AppCompatActivity {
         phoneTextView = (TextView) findViewById(R.id.phoneTextView);
 
         rXTextView = (TextView) findViewById(R.id.rxTextView);
+
+        preprocessing = new Preprocessing();
+
         //Dictionary array in string.xml file
         DATE_Dictionary = getResources().getStringArray(R.array.dateArray);
         detailsList = new ArrayList<>();
@@ -230,13 +233,17 @@ public class UserOCR extends AppCompatActivity {
                         bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, imageTaken);
                         Log.i("valuecamera","yes");
 
-                   //     preprocessBitmap(bitmap);
+                        Bitmap processedBitMap =  preprocessBitmap(bitmap);
+
                         // extract text in the image taken by user
-                        extractText(bitmap);
+                        extractText(processedBitMap);
+
                     } catch (Exception e) {
-                       // Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT)
+
+                        Log.i("exceptionbit",e.getMessage().toLowerCase().toString());
+                        Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT);
                          //       .show();
-                       // Toast.makeText(this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                       Toast.makeText(this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
 
                         Log.i("valueExcption",e.getMessage());
                     }
@@ -245,17 +252,20 @@ public class UserOCR extends AppCompatActivity {
     }
 
 
-
     //apply preprocessing to image before extracting text
-    private void preprocessBitmap(Bitmap bitmap) {
+    private Bitmap preprocessBitmap(Bitmap bitmap) {
 
+        //Bitmap immutableBmp= BitmapFactory.decodeFile(String.valueOf(uri));
         Bitmap mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
         //Pre-processing should take place here
-        //preprocessed_bitmap= preprocessing.RemoveNoise(mutableBitmap);
         //Sharpening the image
-       // preprocessed_bitmap = preprocessing.sharpen(bitmap, 5);
-        //DARKING THE IMAGE
-      //  preprocessed_bitmap = preprocessing.toGrayscale(bitmap);
+        bitmap = preprocessing.sharpen(mutableBitmap, 5);
+        //Remove Noise
+        bitmap =preprocessing.RemoveNoise(bitmap);
+        //DARKENING THE IMAGE
+        bitmap = preprocessing.toGrayscale(bitmap);
+
+        return bitmap;
     }
 
     //look for patient name in the ocr result
