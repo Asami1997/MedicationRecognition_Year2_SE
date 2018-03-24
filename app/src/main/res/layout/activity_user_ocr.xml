@@ -97,6 +97,7 @@
               android:text="@string/rx" />
       </LinearLayout>
 
+
     <Button
         android:id="@+id/sendTransactionButton"
         android:layout_width="match_parent"

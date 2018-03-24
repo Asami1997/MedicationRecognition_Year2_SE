@@ -233,10 +233,12 @@ public class UserOCR extends AppCompatActivity {
                         bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, imageTaken);
                         Log.i("valuecamera","yes");
 
-                        Bitmap processedBitMap =  preprocessBitmap(bitmap);
+                        //preprocess image
+
+                        preprocessed_bitmap = preprocessing.toGrayscale(bitmap);
 
                         // extract text in the image taken by user
-                        extractText(processedBitMap);
+                        extractText(preprocessed_bitmap);
 
                     } catch (Exception e) {
 
@@ -249,23 +251,6 @@ public class UserOCR extends AppCompatActivity {
                     }
                 }
         }
-    }
-
-
-    //apply preprocessing to image before extracting text
-    private Bitmap preprocessBitmap(Bitmap bitmap) {
-
-        //Bitmap immutableBmp= BitmapFactory.decodeFile(String.valueOf(uri));
-        Bitmap mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
-        //Pre-processing should take place here
-        //Sharpening the image
-        bitmap = preprocessing.sharpen(mutableBitmap, 5);
-        //Remove Noise
-        bitmap =preprocessing.RemoveNoise(bitmap);
-        //DARKENING THE IMAGE
-        bitmap = preprocessing.toGrayscale(bitmap);
-
-        return bitmap;
     }
 
     //look for patient name in the ocr result
