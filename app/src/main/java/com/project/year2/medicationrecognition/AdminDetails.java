@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -26,6 +27,8 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -33,6 +36,8 @@ import com.google.firebase.database.ValueEventListener;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
 
 public class AdminDetails extends AppCompatActivity {
 
@@ -45,23 +50,21 @@ public class AdminDetails extends AppCompatActivity {
     String drugDosage;
     String drugInventory;
     Bundle drugDetails;
-    //contains the entries on the y-axis of the bar graph
-    ArrayList<BarEntry> barEntries;
-    //contains the entries on the x-axis of the bar graph
-    ArrayList<String> dates;
-    BarChart barChart;
-    BarData barData;
-    BarDataSet barDataSet;
     DatabaseReference drugsRef;
     AlertDialog.Builder editAlert ;
     DatabaseReference reqRef;
     //will contain new value from user when user edits ingredient , dosage , or inventory
     String value = "";
+    Hashtable<String,Integer> test;
+    TextView frequency;
 
+    int [] values ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_details);
+
+        test = new Hashtable<>();
 
         drugDetails = getIntent().getExtras();
 
@@ -70,9 +73,6 @@ public class AdminDetails extends AppCompatActivity {
 
         drugsRef = FirebaseDatabase.getInstance().getReference().child("Drugs");
 
-        barEntries = new ArrayList<>();
-
-        dates = new ArrayList<>();
 
         editAlert =  new AlertDialog.Builder(this);
 
@@ -82,73 +82,39 @@ public class AdminDetails extends AppCompatActivity {
 
         addDataToTextViews();
 
-        addDates();
-
         getRequests();
 
-        addBarEntries();
-
-        barData = new BarData(dates,barDataSet);
-
-        barChart.setData(barData);
-
-        barChart.setTouchEnabled(true);
-        barChart.setDragEnabled(true);
-        barChart.setScaleEnabled(true);
     }
 
     private void getRequests() {
-        
+
+        final ArrayList<String> months = new ArrayList<>();
+        final ArrayList<Integer> monthValue = new ArrayList<>();
+
+        reqRef.child(drugName).child("amount").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if(dataSnapshot.getValue() != null){
+
+                    Toast.makeText(AdminDetails.this, dataSnapshot.getValue().toString(), Toast.LENGTH_SHORT).show();
+
+                    frequency.setText("Frequency: " + dataSnapshot.getValue().toString());
+                }else{
+
+                    frequency.setText("Frequency: 0" );
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
-    private void addBarEntries() {
-
-
-        barEntries.add(new BarEntry(0f,0));
-
-        barEntries.add(new BarEntry(1f,1));
-
-        barEntries.add(new BarEntry(2f,2));
-
-        barEntries.add(new BarEntry(3f,3));
-
-        barEntries.add(new BarEntry(4f,4));
-
-        barEntries.add(new BarEntry(5f,5));
-
-        barEntries.add(new BarEntry(6f,6));
-
-        barEntries.add(new BarEntry(7f,7));
-
-        barEntries.add(new BarEntry(8f,8));
-
-        barEntries.add(new BarEntry(9f,9));
-
-        barEntries.add(new BarEntry(10f,10));
-
-        barEntries.add(new BarEntry(11f,11));
-
-        barDataSet = new BarDataSet(barEntries,"Months");
-
-
-    }
-
-    private void addDates() {
-
-        dates.add("Jan");
-        dates.add("Feb");
-        dates.add("Mar");
-        dates.add("Apr");
-        dates.add("May");
-        dates.add("Jun");
-        dates.add("Jul");
-        dates.add("Aug");
-        dates.add("Sept");
-        dates.add("Oct");
-        dates.add("Nov");
-        dates.add("Dec");
-
-    }
 
     private void setDrugDetails(String name,String dosage,String inventory,String ingredinet){
 
@@ -180,7 +146,7 @@ public class AdminDetails extends AppCompatActivity {
 
         inventory = (TextView) findViewById(R.id.a_inventory);
 
-        barChart = (BarChart) findViewById(R.id.barChart);
+        frequency = (TextView) findViewById(R.id.frequency);
     }
 
     //this function delete the drug from the database

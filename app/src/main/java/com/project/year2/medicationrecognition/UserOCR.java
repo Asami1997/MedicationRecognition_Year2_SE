@@ -36,6 +36,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -56,7 +57,6 @@ public class UserOCR extends AppCompatActivity {
     //This array list will contain the results of the segmentation and searching process
     private ArrayList<String> detailsList;
     private ArrayList<String> toBeChecked;
-    private String test;
     private String NAME = "";
     private String GENDER = "";
     private String BIRTHDATE = "";
@@ -64,7 +64,10 @@ public class UserOCR extends AppCompatActivity {
     private String PHONE = "";
     private String DRUGS="";
     private String EMAIL = "";
-    int month;
+    private int month;
+    SimpleDateFormat month_date ;
+    String month_name ;
+    private int year;
     private ArrayList<String> tempArrayList;
     private ArrayList<String>allDrugs;
     private ArrayList<String>drugsInImage;
@@ -80,6 +83,7 @@ public class UserOCR extends AppCompatActivity {
     private DatabaseReference ref;
     private Bitmap preprocessed_bitmap;
     private Preprocessing preprocessing;
+    private Calendar calendar;
     FirebaseUser user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,17 +134,29 @@ public class UserOCR extends AppCompatActivity {
         drugsInImage = new ArrayList<>();
         stringBuilder = new StringBuilder();
 
+        calendar = Calendar.getInstance();
+
         //cuurent month will be used later when updating requests on firebase
         getCurrentMonth();
+        getCurrentYear();
     }
 
+    //to be stored in database
+    private void getCurrentYear() {
+
+        year = calendar.get(Calendar.YEAR);
+
+    }
+
+    //be stored in database
     private void getCurrentMonth() {
         java.util.Date date= new Date();
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         month = cal.get(Calendar.MONTH);
 
-        Toast.makeText(this, String.valueOf(month), Toast.LENGTH_SHORT).show();
+        month_date = new SimpleDateFormat("MMM");
+        month_name = month_date.format(calendar.getTime());
     }
 
     public void extractText(Bitmap bitmap) {
@@ -528,7 +544,7 @@ public class UserOCR extends AppCompatActivity {
 
         final DatabaseReference requestsRef = FirebaseDatabase.getInstance().getReference().child("Requests");
 
-        requestsRef.child(drug).addListenerForSingleValueEvent(new ValueEventListener() {
+        requestsRef.child(drug).child("amount").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -542,17 +558,15 @@ public class UserOCR extends AppCompatActivity {
 
                         int valueNew = Integer.parseInt(currentVlaue) + 1;
 
-                        requestsRef.child(drug).child("amount").setValue(String.valueOf(valueNew));
-
-                        requestsRef.child(drug).child("month").setValue(String.valueOf(month));
+                        requestsRef.child(drug).child(month_name).setValue(valueNew);
+                        requestsRef.child(drug).child("amount").setValue(valueNew);
 
 
                 } else {
 
-                    requestsRef.child(drug).child("amount").setValue(String.valueOf(1));
 
-                    requestsRef.child(drug).child("month").setValue(String.valueOf(month));
-
+                    requestsRef.child(drug).child(month_name).setValue(1);
+                    requestsRef.child(drug).child("amount").setValue(1);
                     Toast.makeText(UserOCR.this, "null", Toast.LENGTH_SHORT).show();
                 }
 
