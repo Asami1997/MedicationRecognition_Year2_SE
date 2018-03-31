@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,6 +31,7 @@ public class PharmacistActivity extends AppCompatActivity {
 
     ArrayList<PharamTransaction> pharamTransactions;
 
+    public static ArrayList<String> usersID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +40,8 @@ public class PharmacistActivity extends AppCompatActivity {
         transactionObjects = new ArrayList<>();
 
         pharamTransactions = new ArrayList<>();
+
+        usersID = new ArrayList<>();
 
         transactionsReference = FirebaseDatabase.getInstance().getReference().child("Transactions");
 
@@ -101,6 +105,9 @@ public class PharmacistActivity extends AppCompatActivity {
             Log.i("sizeemail",transactionObject.EMAIL);
             Log.i("sizename",transactionObject.NAME);
 
+            usersID.add(entry.getKey());
+
+            Toast.makeText(this, "key" + entry.getKey(), Toast.LENGTH_SHORT).show();
             transactionObjects.add(transactionObject);
         }
         Log.i("sizePtrans",String.valueOf(transactionObjects.size()));
@@ -116,13 +123,5 @@ public class PharmacistActivity extends AppCompatActivity {
         recyclerView.setAdapter(transactionAdapter);
     }
 
-    //start transaction activity
-    public void startTransactionActivity(int position){
 
-        Intent intent = new Intent(PharmacistActivity.this, TransactionDetails.class);
-
-        intent.putExtra("transactionObject",transactionObjects.get(position));
-
-        startActivity(intent);
-    }
 }

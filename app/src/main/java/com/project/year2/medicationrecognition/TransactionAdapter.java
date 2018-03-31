@@ -65,6 +65,8 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
                 intent.putExtra("transactionObject",pharmacistActivity.transactionObjects.get(position));
 
+                intent.putExtra("id",pharmacistActivity.usersID.get(position));
+
                 mCtx.startActivity(intent);
             }
         });

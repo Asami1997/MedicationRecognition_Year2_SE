@@ -55,6 +55,8 @@ android {
         compile 'com.android.support:multidex:1.0.2'
         compile 'com.google.firebase:firebase-messaging:11.0.4'
         compile 'com.github.PhilJay:MPAndroidChart:v2.2.4'
+        compile 'io.apptik.widget:multiselectspinner:1.0.12'
+
         //  implementation files('libs/opennlp-tools-1.8.4.jar')
         //implementation files('libs/opennlp-uima-1.8.4.jar')
     }

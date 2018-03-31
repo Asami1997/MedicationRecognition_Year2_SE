@@ -4,14 +4,24 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import io.apptik.widget.multiselectspinner.BaseMultiSelectSpinner;
+import io.apptik.widget.multiselectspinner.MultiSelectSpinner;
 
 public class TransactionDetails extends AppCompatActivity {
 
@@ -25,9 +35,9 @@ public class TransactionDetails extends AppCompatActivity {
     private LinearLayout inverntoryLayout;
     private DatabaseReference drugsReference;
     private ArrayList<String> outOfStockDrugs;
+    private ArrayList<String> selectedAlternatives;
     TransactionObject transactionObject;
-    TextView alternativesTextView;
-    String test;
+    String userId;
     ArrayList<String> alternatives ;
     //will contain all the drugs in the transaction
 
@@ -42,16 +52,18 @@ public class TransactionDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction_details);
 
-        alternativesTextView = (TextView) findViewById(R.id.alternativesView);
         Intent intent = getIntent();
+
+        userId = intent.getStringExtra("id");
 
         //contains all the transaction details
         transactionObject = (TransactionObject) intent.getSerializableExtra("transactionObject");
 
-
         drugsReference = FirebaseDatabase.getInstance().getReference().child("Drugs");
 
         alternatives = new ArrayList<String>();
+
+        selectedAlternatives = new ArrayList<String>();
 
         outOfStockDrugs = new ArrayList<>();
 
@@ -185,7 +197,7 @@ public class TransactionDetails extends AppCompatActivity {
                                 if (alternativeActiveIngredient.equals(active_ingredient)) {
                                     Log.i("alternative",child.getKey());
 
-                                    String tempString = "\n" + drug + ": " + alternative;
+                                    String tempString = drug + ": " + alternative;
 
                                     if(!alternatives.contains(tempString)){
 
@@ -193,11 +205,12 @@ public class TransactionDetails extends AppCompatActivity {
 
                                         alternatives.add(tempString);
 
-                                        alternativesTextView.append(tempString);
                                     }
                                 }
                             }
                         }
+
+                        addAlternativesToSpinner();
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
@@ -205,4 +218,72 @@ public class TransactionDetails extends AppCompatActivity {
                     }
                 });
     }
+
+    private void addAlternativesToSpinner() {
+
+
+        final MultiSelectSpinner multiSelectSpinner = (MultiSelectSpinner) findViewById(R.id.multiselectSpinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_multiple_choice, alternatives);
+
+        multiSelectSpinner
+                .setListAdapter(adapter)
+
+                .setListener(new MultiSelectSpinner.MultiSpinnerListener() {
+                    @Override
+                    public void onItemsSelected(boolean[] selected) {
+
+                        for(int i = 0 ; i< selected.length;i++){
+
+                            Log.i("selected",String.valueOf(selected[i]));
+
+                            if(selected[i]){
+
+                                selectedAlternatives.add(alternatives.get(i));
+
+                                Log.i("selectedalternative",selectedAlternatives.get(i));
+                            }
+
+                        }
+
+
+                    }
+                })
+                .setAllCheckedText("All Selected")
+                .setAllUncheckedText("none selected")
+                .setSelectAll(true)
+                .setTitle("Alternatives")
+                .setMinSelectedItems(1);
+
+    }
+
+
+
+
+
+    // will begin the process of notifying the user that the transaction has been approved
+    public void approveTransaction(View view){
+
+        final DatabaseReference notifications = FirebaseDatabase.getInstance().getReference().child("Notifications");
+
+        notifications.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+                    notifications.child(userId).child("notification").setValue("yes");
+                    if(selectedAlternatives != null){
+                        notifications.child(userId).child("alternative").setValue(selectedAlternatives.toString());
+
+                    }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
 }

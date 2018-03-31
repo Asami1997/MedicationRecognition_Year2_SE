@@ -1,6 +1,9 @@
 package com.project.year2.medicationrecognition;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +14,9 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -85,6 +90,8 @@ public class UserOCR extends AppCompatActivity {
     private Preprocessing preprocessing;
     private Calendar calendar;
     FirebaseUser user;
+    String currentUserUID;
+    String alternatives;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,6 +118,8 @@ public class UserOCR extends AppCompatActivity {
         mAuth =  FirebaseAuth.getInstance();
         //initializing textview
 
+        currentUserUID = mAuth.getCurrentUser().getUid();
+
         nameTextView = (TextView) findViewById(R.id.nameTextView);
 
         ageTextView = (TextView) findViewById(R.id.ageTextView);
@@ -123,6 +132,7 @@ public class UserOCR extends AppCompatActivity {
 
         rXTextView = (TextView) findViewById(R.id.rxTextView);
 
+
         preprocessing = new Preprocessing();
 
         //Dictionary array in string.xml file
@@ -134,11 +144,117 @@ public class UserOCR extends AppCompatActivity {
         drugsInImage = new ArrayList<>();
         stringBuilder = new StringBuilder();
 
+        checkForNotifications();
+
         calendar = Calendar.getInstance();
 
         //cuurent month will be used later when updating requests on firebase
         getCurrentMonth();
         getCurrentYear();
+    }
+
+
+    private void checkForNotifications() {
+
+        final DatabaseReference notifications = FirebaseDatabase.getInstance().getReference().child("Notifications");
+
+        notifications.child(currentUserUID).child("notification").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+                if(dataSnapshot != null){
+
+                   String value = dataSnapshot.getValue().toString();
+
+                    Toast.makeText(UserOCR.this, "noti" + value, Toast.LENGTH_SHORT).show();
+
+                    if(value.equals("yes")){
+
+                        notifications.child(currentUserUID).child("notification").setValue("no");
+                        getAlternativesIfExist();
+                    }else{
+
+                        pushNotification("No");
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void pushNotification(String notify) {
+
+        if(notify.equals("No")){
+
+            NotificationManager notificationManager = (NotificationManager) this
+                    .getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(
+                    this);
+            builder.setSmallIcon(R.drawable.ic_launcher)
+                    .setContentTitle("Transaction Status")
+                    .setContentText("Approved")
+                    .setWhen(System.currentTimeMillis()).setAutoCancel(true)
+                    .setDefaults(Notification.DEFAULT_ALL)
+                    .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
+                    .setStyle(new NotificationCompat.BigTextStyle());
+
+
+            Notification notification = builder.build();
+            notificationManager.notify(1, notification);
+
+        }else{
+
+            NotificationManager notificationManager = (NotificationManager) this
+                    .getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(
+                    this);
+            builder.setSmallIcon(R.drawable.ic_launcher)
+                    .setContentTitle("Transaction Status")
+                    .setContentText("Alternative drugs has been chosen for you which are :" + "\n" + alternatives)
+                    .setWhen(System.currentTimeMillis()).setAutoCancel(true)
+                    .setDefaults(Notification.DEFAULT_ALL)
+                    .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
+                    .setStyle(new NotificationCompat.BigTextStyle());
+
+
+            Notification notification = builder.build();
+            notificationManager.notify(1, notification);
+        }
+    }
+
+    private void getAlternativesIfExist() {
+
+        final DatabaseReference notifications = FirebaseDatabase.getInstance().getReference().child("Notifications");
+
+        notifications.child(currentUserUID).child("alternative").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+                if(dataSnapshot != null){
+
+
+                     alternatives= dataSnapshot.getValue().toString();
+
+                    Toast.makeText(UserOCR.this, alternatives, Toast.LENGTH_SHORT).show();
+                    pushNotification("Yes");
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     //to be stored in database
