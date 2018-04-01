@@ -1,110 +1,135 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools"
+    android:id="@+id/rightLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1E88E5"
-    tools:context="com.project.year2.medicationrecognition.UserOCR">
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/uuerGuied1"
+    <LinearLayout
+        android:id="@+id/lay1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/user_guied1"
-        android:gravity="center"
-        android:textColor="#212121"
-        android:textSize="26sp"/>
-
-    <Button
-        android:id="@+id/button_processed"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/uuerGuied1"
-        android:layout_marginTop="14dp"
-        android:onClick="openCamera"
-        android:text="Take Image" />
-
-    <TextView
-        android:id="@+id/resultsTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/button_processed"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:textColor="#212121"
-        android:textSize="24sp"
-        android:layout_marginTop="20dp"
-        android:text="@string/results"/>
-      <LinearLayout
-          android:id="@+id/resultsLinerLayout"
-          android:orientation="vertical"
-          android:layout_width="match_parent"
-          android:layout_marginTop="10dp"
-          android:layout_below="@id/resultsTextView"
-          android:layout_height="wrap_content">
-
-          <TextView
-              android:id="@+id/nameTextView"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:text="@string/name"
-              android:textColor="#212121"
-              android:textSize="20sp" />
-
-          <TextView
-              android:id="@+id/ageTextView"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:textSize="20sp"
-              android:layout_marginTop="5dp"
-              android:textColor="#212121"
-              android:text="@string/age" />
-          <TextView
-              android:id="@+id/genderTextView"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:textSize="20sp"
-              android:layout_marginTop="5dp"
-              android:textColor="#212121"
-              android:text="@string/gender" />
-
-          <TextView
-              android:id="@+id/birthDateTextView"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:textSize="20sp"
-              android:layout_marginTop="5dp"
-              android:textColor="#212121"
-              android:text="@string/birthDate" />
-          <TextView
-              android:id="@+id/phoneTextView"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:textSize="20sp"
-              android:layout_marginTop="5dp"
-              android:textColor="#212121"
-              android:text="@string/phone" />
-          <TextView
-              android:id="@+id/rxTextView"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:textSize="20sp"
-              android:layout_marginTop="5dp"
-
-              android:textColor="#212121"
-              android:text="@string/rx" />
-      </LinearLayout>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:background="@drawable/background_gradient" >
 
 
-    <Button
-        android:id="@+id/sendTransactionButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/resultsLinerLayout"
-        android:layout_marginTop="40dp"
-        android:onClick="sendTransaction"
-        android:text="@string/sendRequest" />
-</RelativeLayout>
+
+        <Button
+            android:id="@+id/button_processed"
+            android:layout_width="match_parent"
+            android:text="Take Image of prescription "
+            android:background="#F44336"
+            android:textColor="#fff"
+            android:onClick="openCamera"
+            android:layout_marginTop="15dp"
+            android:layout_height="wrap_content" />
+
+
+        <com.dd.processbutton.iml.ActionProcessButton
+            android:id="@+id/processButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="15dp"
+            android:text="PROCESS"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:onClick="processImage"
+            custom:pb_colorComplete="@color/green_complete"
+            custom:pb_colorNormal="@color/blue_normal"
+            custom:pb_colorPressed="@color/blue_pressed"
+            custom:pb_colorProgress="@color/purple_progress"
+            custom:pb_textComplete="Success"
+            custom:pb_textProgress="Loading"
+            custom:pb_textError="Error"
+            custom:pb_colorError="@color/red_error" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lay2"
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:background="@drawable/background_green" >
+
+        <TextView
+            android:id="@+id/nameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/name"
+            android:textColor="#212121"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/ageTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginTop="5dp"
+            android:textColor="#212121"
+            android:text="@string/age" />
+        <TextView
+            android:id="@+id/genderTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginTop="5dp"
+            android:textColor="#212121"
+            android:text="@string/gender" />
+
+        <TextView
+            android:id="@+id/birthDateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginTop="5dp"
+            android:textColor="#212121"
+            android:text="@string/birthDate" />
+        <TextView
+            android:id="@+id/phoneTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginTop="5dp"
+            android:textColor="#212121"
+            android:text="@string/phone" />
+        <TextView
+            android:id="@+id/rxTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginTop="5dp"
+
+            android:textColor="#212121"
+            android:text="@string/rx" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lay3"
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:background="@drawable/background_yellow">
+
+
+        <Button
+            android:id="@+id/sendTransactionButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/resultsLinerLayout"
+            android:layout_marginTop="50dp"
+            android:background="#795548"
+            android:onClick="sendTransaction"
+            android:text="@string/sendRequest"
+            android:textColor="#fff" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
@@ -26,6 +27,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dd.CircularProgressButton;
+import com.dd.processbutton.iml.ActionProcessButton;
 import com.firebase.client.FirebaseError;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
@@ -92,12 +95,16 @@ public class UserOCR extends AppCompatActivity {
     FirebaseUser user;
     String currentUserUID;
     String alternatives;
+    boolean imageTaken = false;
+    ActionProcessButton processButton;
+    int progress = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_ocr);
 
         //ask for storage permission
+
 
         isStoragePermissionGranted();
 
@@ -132,6 +139,7 @@ public class UserOCR extends AppCompatActivity {
 
         rXTextView = (TextView) findViewById(R.id.rxTextView);
 
+        processButton = (ActionProcessButton) findViewById(R.id.processButton);
 
         preprocessing = new Preprocessing();
 
@@ -339,6 +347,8 @@ public class UserOCR extends AppCompatActivity {
     }
 
     public void openCamera(View view) {
+
+        processButton.setProgress(0);
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         //File will be created in the device public/shared storage , outside the app
         //this file will contain the image
@@ -355,6 +365,7 @@ public class UserOCR extends AppCompatActivity {
         switch (requestCode) {
             case TAKE_PICTURE:
                 if (resultCode == Activity.RESULT_OK) {
+                    imageTaken = true;
                     Uri imageTaken = imageUri;
                     //This notifies the content resolver that change has happened in the file ( In this case that an image has been saved in the file)
                     getContentResolver().notifyChange(imageTaken, null);
@@ -370,8 +381,6 @@ public class UserOCR extends AppCompatActivity {
 
                         preprocessed_bitmap = preprocessing.toGrayscale(bitmap);
 
-                        // extract text in the image taken by user
-                        extractText(preprocessed_bitmap);
 
                     } catch (Exception e) {
 
@@ -728,5 +737,24 @@ public class UserOCR extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //do nothing when back is pressed
+    }
+
+    public void processImage (View view){
+
+
+       processButton.setMode(ActionProcessButton.Mode.PROGRESS);
+
+
+        if(!imageTaken){
+
+            Toast.makeText(this, "Please take an image", Toast.LENGTH_SHORT).show();
+        }else{
+
+            imageTaken = false;
+            // extract text in the image taken by user
+            extractText(preprocessed_bitmap);
+
+        }
+
     }
 }
