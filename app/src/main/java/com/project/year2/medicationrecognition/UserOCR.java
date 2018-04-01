@@ -189,6 +189,7 @@ public class UserOCR extends AppCompatActivity {
         });
     }
 
+    //notify the user about the transaction status
     private void pushNotification(String notify) {
 
         if(notify.equals("No")){

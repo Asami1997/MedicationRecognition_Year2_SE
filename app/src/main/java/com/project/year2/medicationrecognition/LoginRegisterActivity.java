@@ -1,6 +1,7 @@
 package com.project.year2.medicationrecognition;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -41,6 +42,7 @@ public class LoginRegisterActivity extends AppCompatActivity implements View.OnC
     private String userType;
     private String type;
     private FirebaseAuth mAuth;
+    ProgressDialog dialog;
     private FirebaseAuth.AuthStateListener mAuthStateListner;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef =  FirebaseDatabase.getInstance().getReference();
@@ -115,11 +117,11 @@ public class LoginRegisterActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void onClick(View view) {
+
         switch (view.getId()){
             case R.id.registerButton:
                 operation = 1;
                 getEmailPassword();
-
                 break;
 
             case R.id.signInButton :
@@ -154,10 +156,18 @@ public class LoginRegisterActivity extends AppCompatActivity implements View.OnC
                         if (operation == 1){
                             //register
                             Log.i("Register","yes");
+                            dialog = new ProgressDialog(LoginRegisterActivity.this);
+                            dialog.setMessage("Authenticating...");
+                            dialog.show();
+
                             //create new user
+
                             registerUser();
 
                         }else {
+                            dialog = new ProgressDialog(LoginRegisterActivity.this);
+                            dialog.setMessage("Authenticating...");
+                            dialog.show();
                             //Sign in
                             loginUser();
                             Log.i("Login","yes");
@@ -185,6 +195,7 @@ public class LoginRegisterActivity extends AppCompatActivity implements View.OnC
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(LoginRegisterActivity.this, "Successfully Signed In ", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
                             //get user type
                              validateUserType(user);
 
@@ -267,6 +278,7 @@ public class LoginRegisterActivity extends AppCompatActivity implements View.OnC
                             //save data to database
                             UserNew user1 = new UserNew(email,userType);
                             myRef.child("Users").child(user.getUid()).setValue(user1);
+                            dialog.dismiss();
                             goToActivity(userType);
 
                         } else {
