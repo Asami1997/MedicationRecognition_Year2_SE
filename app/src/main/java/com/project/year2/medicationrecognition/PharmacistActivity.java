@@ -7,8 +7,12 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,6 +30,7 @@ public class PharmacistActivity extends AppCompatActivity {
 
     DatabaseReference transactionsReference;
 
+    FirebaseAuth Auth;
     //contain all transactions
     public static ArrayList<TransactionObject> transactionObjects;
 
@@ -36,6 +41,8 @@ public class PharmacistActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pharmacist);
+
+        Auth = FirebaseAuth.getInstance();
 
         transactionObjects = new ArrayList<>();
 
@@ -76,7 +83,13 @@ public class PharmacistActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         //Get map of users in datasnapshot
                         Log.i("here","yes");
-                        getAllTransactions((Map<String,Object>) dataSnapshot.getValue());
+
+                        if(dataSnapshot.getValue() == null){
+
+                            Toast.makeText(PharmacistActivity.this, "No transactions available", Toast.LENGTH_LONG).show();
+                        }else{
+                            getAllTransactions((Map<String,Object>) dataSnapshot.getValue());
+                        }
 
                         //create a transaction object after all data has been extracted
                     }
@@ -107,7 +120,6 @@ public class PharmacistActivity extends AppCompatActivity {
 
             usersID.add(entry.getKey());
 
-            Toast.makeText(this, "key" + entry.getKey(), Toast.LENGTH_SHORT).show();
             transactionObjects.add(transactionObject);
         }
         Log.i("sizePtrans",String.valueOf(transactionObjects.size()));
@@ -124,4 +136,27 @@ public class PharmacistActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+
+        inflater.inflate(R.menu.menu_signout,menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(item.getItemId() == R.id.sign_out){
+
+            Auth.signOut();
+
+            Intent intent = new Intent(getApplicationContext(),LoginRegisterActivity.class);
+
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

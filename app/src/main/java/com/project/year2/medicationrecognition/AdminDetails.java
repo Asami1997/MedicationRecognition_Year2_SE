@@ -97,8 +97,6 @@ public class AdminDetails extends AppCompatActivity {
 
                 if(dataSnapshot.getValue() != null){
 
-                    Toast.makeText(AdminDetails.this, dataSnapshot.getValue().toString(), Toast.LENGTH_SHORT).show();
-
                     frequency.setText("Frequency: " + dataSnapshot.getValue().toString());
                 }else{
 
@@ -224,7 +222,6 @@ public class AdminDetails extends AppCompatActivity {
             case R.id.ingredientButton:
 
 
-                Toast.makeText(this,value, Toast.LENGTH_SHORT).show();
 
                  DatabaseReference activeIngredientRef =  FirebaseDatabase.getInstance().getReference().child("Drugs").child(drugName)
                         .child("active_ingredient");

@@ -15,8 +15,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.deser.impl.InnerClassProperty;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,13 +43,15 @@ public class AdminActivity extends AppCompatActivity {
     ArrayList<String> dosage;
     ArrayAdapter drugsAdapter;
     ListView drugsListView;
-
+   FirebaseAuth Auth ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
 
         drugsReference = FirebaseDatabase.getInstance().getReference().child("Drugs");
+
+        Auth = FirebaseAuth.getInstance();
 
         drugsListView = (ListView) findViewById(R.id.drugsListView);
 
@@ -127,7 +131,7 @@ public class AdminActivity extends AppCompatActivity {
 
         }
 
-        drugsAdapter = new ArrayAdapter(getApplicationContext(),android.R.layout.simple_list_item_1,drugs);
+        drugsAdapter = new ArrayAdapter(getApplicationContext(),R.layout.lis_layout_admin,R.id.drugname,drugs);
 
         drugsListView.setAdapter(drugsAdapter);
 
@@ -162,6 +166,19 @@ public class AdminActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(item.getItemId() == R.id.sign_out){
+
+            Auth.signOut();
+
+            Intent intent = new Intent(getApplicationContext(),LoginRegisterActivity.class);
+
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     public void addDrug(View view) {
 

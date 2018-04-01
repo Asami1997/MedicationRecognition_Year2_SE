@@ -16,12 +16,16 @@ import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,6 +34,8 @@ import android.widget.Toast;
 import com.dd.CircularProgressButton;
 import com.dd.processbutton.iml.ActionProcessButton;
 import com.firebase.client.FirebaseError;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
@@ -93,6 +99,7 @@ public class UserOCR extends AppCompatActivity {
     private Preprocessing preprocessing;
     private Calendar calendar;
     FirebaseUser user;
+    FirebaseAuth Auth;
     String currentUserUID;
     String alternatives;
     boolean imageTaken = false;
@@ -121,6 +128,8 @@ public class UserOCR extends AppCompatActivity {
         myRef = FirebaseDatabase.getInstance().getReference().child("Drugs");
 
         ref = FirebaseDatabase.getInstance().getReference();
+
+        Auth = FirebaseAuth.getInstance();
 
         mAuth =  FirebaseAuth.getInstance();
         //initializing textview
@@ -175,7 +184,6 @@ public class UserOCR extends AppCompatActivity {
 
                    String value = dataSnapshot.getValue().toString();
 
-                    Toast.makeText(UserOCR.this, "noti" + value, Toast.LENGTH_SHORT).show();
 
                     if(value.equals("yes")){
 
@@ -207,7 +215,7 @@ public class UserOCR extends AppCompatActivity {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(
                     this);
             builder.setSmallIcon(R.drawable.ic_launcher)
-                    .setContentTitle("Transaction Status")
+                    .setContentTitle("Previous Transaction Status")
                     .setContentText("Approved")
                     .setWhen(System.currentTimeMillis()).setAutoCancel(true)
                     .setDefaults(Notification.DEFAULT_ALL)
@@ -225,7 +233,7 @@ public class UserOCR extends AppCompatActivity {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(
                     this);
             builder.setSmallIcon(R.drawable.ic_launcher)
-                    .setContentTitle("Transaction Status")
+                    .setContentTitle("Previous Transaction Status")
                     .setContentText("Alternative drugs has been chosen for you which are :" + "\n" + alternatives)
                     .setWhen(System.currentTimeMillis()).setAutoCancel(true)
                     .setDefaults(Notification.DEFAULT_ALL)
@@ -252,8 +260,7 @@ public class UserOCR extends AppCompatActivity {
 
                      alternatives= dataSnapshot.getValue().toString();
 
-                    Toast.makeText(UserOCR.this, alternatives, Toast.LENGTH_SHORT).show();
-                    pushNotification("Yes");
+                     pushNotification("Yes");
                 }
 
 
@@ -303,7 +310,6 @@ public class UserOCR extends AppCompatActivity {
 
         } else {
 
-            Toast.makeText(context, "here1", Toast.LENGTH_SHORT).show();
             // Text Recognizer Is Working
 
             Frame frame = new Frame.Builder().setBitmap(bitmap).build();
@@ -426,7 +432,7 @@ public class UserOCR extends AppCompatActivity {
                 if(NAME != null){
                     //append to nameTextView
 
-                    nameTextView.append(" " + NAME);
+                    nameTextView.setText("Patient Name : " + NAME);
                 }
             }
 
@@ -451,7 +457,7 @@ public class UserOCR extends AppCompatActivity {
                 if(AGE != null){
                     //append to nameTextView
 
-                    ageTextView.append(" " + AGE);
+                    ageTextView.setText("Age : " + AGE);
                 }
                 Log.i("valueage", AGE);
             }
@@ -490,7 +496,7 @@ public class UserOCR extends AppCompatActivity {
                     if(BIRTHDATE != null){
                         //append to nameTextView
 
-                        birthDateTextView.append(" " + BIRTHDATE);
+                        birthDateTextView.setText("BirthDate : " + BIRTHDATE);
                     }
                     Log.i("valuedate", BIRTHDATE);
                 }
@@ -519,7 +525,7 @@ public class UserOCR extends AppCompatActivity {
         if(GENDER != null){
             //append to nameTextView
 
-            genderTextView.append(" " + GENDER);
+            genderTextView.setText("Gender : " + GENDER);
         }
 
         Log.i("valuegender", GENDER);
@@ -555,7 +561,7 @@ public class UserOCR extends AppCompatActivity {
                 if(PHONE != null){
                     //append to nameTextView
 
-                    phoneTextView.append(" " + PHONE);
+                    phoneTextView.setText("Phone : " + PHONE);
                 }
 
                 Log.i("valuephone", PHONE);
@@ -626,6 +632,8 @@ public class UserOCR extends AppCompatActivity {
 
     private void prescriptionDrug() {
 
+        rXTextView.setText("Rx : " );
+
         for(String line : tempArrayList){
 
             for(String drug : allDrugs){
@@ -677,7 +685,6 @@ public class UserOCR extends AppCompatActivity {
 
                 if (dataSnapshot.getValue() != null) {
 
-                        Toast.makeText(UserOCR.this, drug +  dataSnapshot.getValue().toString(), Toast.LENGTH_SHORT).show();
 
                         String currentVlaue =  dataSnapshot.getValue().toString();
 
@@ -693,7 +700,6 @@ public class UserOCR extends AppCompatActivity {
 
                     requestsRef.child(drug).child(month_name).setValue(1);
                     requestsRef.child(drug).child("amount").setValue(1);
-                    Toast.makeText(UserOCR.this, "null", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -756,5 +762,33 @@ public class UserOCR extends AppCompatActivity {
 
         }
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+
+        inflater.inflate(R.menu.menu_signout,menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(item.getItemId() == R.id.sign_out){
+
+            Toast.makeText(this, "Signed out", Toast.LENGTH_SHORT).show();
+
+
+            Auth.signOut();
+
+            Intent intent = new Intent(getApplicationContext(),LoginRegisterActivity.class);
+
+            startActivity(intent);
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -151,6 +151,10 @@ public class TransactionDetails extends AppCompatActivity {
             });
         }
 
+        if(outOfStockDrugs.size() == 0){
+
+            inventoryDetailsTextView.setText("All Drugs Are Available");
+        }
     }
 
     public void getActiveIngredints(final String drug) {

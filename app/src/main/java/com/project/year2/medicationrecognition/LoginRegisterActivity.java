@@ -194,7 +194,6 @@ public class LoginRegisterActivity extends AppCompatActivity implements View.OnC
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(LoginRegisterActivity.this, "Successfully Signed In ", Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
                             //get user type
                              validateUserType(user);
@@ -230,6 +229,8 @@ public class LoginRegisterActivity extends AppCompatActivity implements View.OnC
                             Toast.makeText(LoginRegisterActivity.this, "You Have No Access To "+
                                     userType +"side", Toast.LENGTH_SHORT).show();
                         }else{
+                            Toast.makeText(LoginRegisterActivity.this, "Successfully Signed In ", Toast.LENGTH_SHORT).show();
+
                             goToActivity(type);
                         }
                     }

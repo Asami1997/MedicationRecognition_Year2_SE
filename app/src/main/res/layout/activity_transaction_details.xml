@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1E88E5"
+    android:background="@drawable/background_gradient"
     tools:context="com.project.year2.medicationrecognition.TransactionDetails">
 
     <TextView
@@ -132,10 +132,11 @@
 
     <Button
         android:id="@+id/approveButton"
-        android:background="@color/cardview_light_background"
+        android:background="@drawable/rec_gradient_fb"
         android:onClick="approveTransaction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#fff"
         android:layout_below="@+id/alternativesLinerLayout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="48dp"

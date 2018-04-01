@@ -58,8 +58,6 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             @Override
             public void onClick(View view) {
 
-                Toast.makeText(mCtx, pharamTransaction.getName(), Toast.LENGTH_SHORT).show();
-
                 //start transaction details activity with passing data to it
                 Intent intent = new Intent(mCtx, TransactionDetails.class);
 
