@@ -275,8 +275,13 @@ public class TransactionDetails extends AppCompatActivity {
 
 
                     notifications.child(userId).child("notification").setValue("yes");
-                    if(selectedAlternatives != null){
-                        notifications.child(userId).child("alternative").setValue(selectedAlternatives.toString());
+                    if(selectedAlternatives.toString().length() != 0){
+
+                        //remove brackets from string us9ing regex
+
+                        String modifedString  = selectedAlternatives.toString().replaceAll("\\p{P}","");
+
+                        notifications.child(userId).child("alternative").setValue(modifedString);
 
                     }
 
@@ -287,7 +292,21 @@ public class TransactionDetails extends AppCompatActivity {
 
             }
         });
+
+        Toast.makeText(this, "Transaction Approved", Toast.LENGTH_LONG).show();
+
+        //remove transaction after its approval
+
+        removeTransaction();
+
     }
 
+    private void removeTransaction() {
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Transactions").child(userId);
+
+        ref.removeValue();
+
+    }
 
 }

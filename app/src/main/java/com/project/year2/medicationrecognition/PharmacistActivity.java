@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,6 +38,8 @@ public class PharmacistActivity extends AppCompatActivity {
     ArrayList<PharamTransaction> pharamTransactions;
 
     public static ArrayList<String> usersID;
+
+    TextView transactionsTextView ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +60,8 @@ public class PharmacistActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        transactionsTextView = (TextView) findViewById(R.id.guiedPharmacist1);
 
         //get transactions fromfire base
 
@@ -87,6 +92,8 @@ public class PharmacistActivity extends AppCompatActivity {
                         if(dataSnapshot.getValue() == null){
 
                             Toast.makeText(PharmacistActivity.this, "No transactions available", Toast.LENGTH_LONG).show();
+
+                            transactionsTextView.setText("No Transactions Available");
                         }else{
                             getAllTransactions((Map<String,Object>) dataSnapshot.getValue());
                         }

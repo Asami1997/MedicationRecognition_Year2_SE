@@ -180,10 +180,9 @@ public class UserOCR extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
 
-                if(dataSnapshot != null){
+                if(dataSnapshot.getValue() != null){
 
                    String value = dataSnapshot.getValue().toString();
-
 
                     if(value.equals("yes")){
 
@@ -255,12 +254,16 @@ public class UserOCR extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
 
-                if(dataSnapshot != null){
+                if(dataSnapshot.getValue().toString().length() != 0){
 
 
                      alternatives= dataSnapshot.getValue().toString();
 
                      pushNotification("Yes");
+                }else{
+
+                    pushNotification("No");
+
                 }
 
 
@@ -347,6 +350,7 @@ public class UserOCR extends AppCompatActivity {
             extractPhone(detectedText.toString());
             extractRx(detectedText.toString());
 
+            processButton.setProgress(100);
             Log.i("drugsrx",DRUGS);
 
         }
@@ -671,6 +675,8 @@ public class UserOCR extends AppCompatActivity {
             editRequestNumber(drug);
 
         }
+
+        Toast.makeText(this, "Transaction Sent", Toast.LENGTH_SHORT).show();
     }
 
     //the function edits how many requests has been made on the database for the drugs
