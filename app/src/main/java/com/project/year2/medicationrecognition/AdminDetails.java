@@ -249,7 +249,7 @@ public class AdminDetails extends AppCompatActivity {
 
                         Toast.makeText(AdminDetails.this, "Value Changed Successfully", Toast.LENGTH_SHORT).show();
 
-                        activeIngredient.setText("Dosage : " + value);
+                        dosage.setText("Dosage : " + value);
 
                     }
                 });
@@ -267,7 +267,7 @@ public class AdminDetails extends AppCompatActivity {
 
                         Toast.makeText(AdminDetails.this, "Value Changed Successfully", Toast.LENGTH_SHORT).show();
 
-                        activeIngredient.setText("Inventory : " + value);
+                        inventory.setText("Inventory : " + value);
 
                     }
                 });

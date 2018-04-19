@@ -124,22 +124,31 @@ public class TransactionDetails extends AppCompatActivity {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    Long inventory = (Long) dataSnapshot.child("inventory").getValue();
+                    if(dataSnapshot.child("inventory").getValue() != null){
 
-                    Log.i("drug",drug.toLowerCase());
+                        Long inventory = Long.valueOf(dataSnapshot.child("inventory").getValue().toString());
 
-                    Log.i("temp",String.valueOf(inventory));
+                        Log.i("drug",drug.toLowerCase());
 
-                    if(inventory != null){
+                        Log.i("temp",String.valueOf(inventory));
 
-                        if(inventory == 0){
-                            outOfStockDrugs.add(drug.toLowerCase());
-                            addToInventoryLayout(drug);
-                            Log.i("outofstock",outOfStockDrugs.toString());
-                            getActiveIngredints(drug);
+                        if(inventory != null){
 
+                            if(inventory == 0){
+                                outOfStockDrugs.add(drug.toLowerCase());
+                                addToInventoryLayout(drug);
+                                Log.i("outofstock",outOfStockDrugs.toString());
+                                getActiveIngredints(drug);
+
+                            }
+
+                            if(outOfStockDrugs.size() == 0){
+
+                                inventoryDetailsTextView.setText("All Drugs Are Available");
+                            }
                         }
                     }
+
 
                 }
 
@@ -151,10 +160,7 @@ public class TransactionDetails extends AppCompatActivity {
             });
         }
 
-        if(outOfStockDrugs.size() == 0){
 
-            inventoryDetailsTextView.setText("All Drugs Are Available");
-        }
     }
 
     public void getActiveIngredints(final String drug) {
@@ -244,7 +250,6 @@ public class TransactionDetails extends AppCompatActivity {
 
                                 selectedAlternatives.add(alternatives.get(i));
 
-                                Log.i("selectedalternative",selectedAlternatives.get(i));
                             }
 
                         }
@@ -259,9 +264,6 @@ public class TransactionDetails extends AppCompatActivity {
                 .setMinSelectedItems(1);
 
     }
-
-
-
 
 
     // will begin the process of notifying the user that the transaction has been approved

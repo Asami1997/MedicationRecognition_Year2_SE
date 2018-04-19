@@ -109,6 +109,7 @@ public class PharmacistActivity extends AppCompatActivity {
 
     }
 
+
     private void getAllTransactions(Map<String, Object> value) {
 
         //iterate through each user, ignoring their UID
@@ -165,5 +166,11 @@ public class PharmacistActivity extends AppCompatActivity {
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+
     }
 }

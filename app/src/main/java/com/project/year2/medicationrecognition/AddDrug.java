@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -44,6 +45,8 @@ public class AddDrug extends AppCompatActivity {
         drugInventory = inventoryEditText.getText().toString();
 
         saveInFireBase();
+
+       Toast.makeText(this, "Added successfully", Toast.LENGTH_SHORT).show();
     }
 
     //save drug in firebase
