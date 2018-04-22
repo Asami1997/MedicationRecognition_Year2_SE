@@ -358,6 +358,10 @@ public class UserOCR extends AppCompatActivity {
 
     public void openCamera(View view) {
 
+        //reset textviews
+
+        resetTextViews();
+
         processButton.setProgress(0);
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         //File will be created in the device public/shared storage , outside the app
@@ -575,6 +579,8 @@ public class UserOCR extends AppCompatActivity {
 
     public void extractRx(String ocrResult){
 
+        tempArrayList.clear();
+
         Log.i("valuelist",toBeChecked.toString());
         String[] splitedArray = ocrResult.split("\\r?\\n");
         for(int i = 0 ; i<=splitedArray.length-1;i++){
@@ -613,6 +619,7 @@ public class UserOCR extends AppCompatActivity {
     //gets all drugs and their active ingredients from the database
     private void getAllDrugsIngredient(Map<String, Object> value) {
 
+        allDrugs.clear();
         Log.i("valuehere","yes");
         ArrayList<String> activeIngredients = new ArrayList<>();
 
@@ -636,6 +643,7 @@ public class UserOCR extends AppCompatActivity {
 
     private void prescriptionDrug() {
 
+        DRUGS = "";
         rXTextView.setText("Rx : " );
 
         for(String line : tempArrayList){
@@ -779,6 +787,22 @@ public class UserOCR extends AppCompatActivity {
         return true;
     }
 
+
+    //resets the textviews
+    public void resetTextViews (){
+
+        nameTextView.setText("Patient Name : ");
+
+        phoneTextView.setText("Phone : ");
+
+        genderTextView.setText("Gender : ");
+
+        rXTextView.setText("Rx : " );
+
+        birthDateTextView.setText("BirthDate : ");
+
+
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
