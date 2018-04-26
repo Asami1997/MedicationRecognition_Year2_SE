@@ -396,6 +396,7 @@ public class UserOCR extends AppCompatActivity {
                         preprocessed_bitmap = preprocessing.toGrayscale(bitmap);
 
 
+
                     } catch (Exception e) {
 
                         Log.i("exceptionbit",e.getMessage().toLowerCase().toString());

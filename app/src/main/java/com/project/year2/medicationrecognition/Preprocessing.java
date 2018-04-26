@@ -6,9 +6,7 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 
-/**
- * Created by asami on 3/25/2018.
- */
+
 
 public class Preprocessing {
 

@@ -5,9 +5,7 @@ import android.util.Log;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/**
- * Created by asami on 2/2/2018.
- */
+
 
 public class TransactionObject implements Serializable {
 

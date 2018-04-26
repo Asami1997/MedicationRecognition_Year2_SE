@@ -12,9 +12,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
-/**
- * Created by asami on 2/5/2018.
- */
+
 
 /*
    RecyclerView.Adapter -> Binds The Data to the View
